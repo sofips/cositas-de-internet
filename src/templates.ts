@@ -29,6 +29,10 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="${BASE_PATH}/styles.css?v=${ASSET_VERSION}">
+  <script>
+    // Global BASE_PATH for client-side scripts
+    window.BASE_PATH = '${BASE_PATH}';
+  </script>
 </head>
 <body>
   <!-- Frutiger Aero Background Elements -->
@@ -102,9 +106,6 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   </div>
   
   <script>
-    // Global BASE_PATH for client-side scripts
-    window.BASE_PATH = '${BASE_PATH}';
-    
     // Image Modal with Navigation
     const modal = document.getElementById('image-modal');
     const modalImg = document.getElementById('modal-img');
