@@ -1,0 +1,72 @@
+[
+  {
+    "file": "vino_y_panchitos.jpg",
+    "description": "Yo muy feliz comiendo un panchito y tomando vino.",
+    "tags": [
+      "panchito",
+      "vino",
+      "yo",
+      "foto"
+    ]
+  },
+  {
+    "file": "tunuyan.jpg",
+    "description": "Paisaje en Tunuyán, Mendoza.",
+    "tags": [
+      "Mendoza",
+      "Tunuyán",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "guiso_con_mis_amigas.jpg",
+    "description": "Comiendo guiso con mis amigas.",
+    "tags": [
+      "amigas",
+      "guiso",
+      "yo",
+      "Anita",
+      "Clari",
+      "Day",
+      "foto"
+    ]
+  },
+  {
+    "file": "atardecer_uspallata.jpg",
+    "description": "Un atardecer en Uspallata, Mendoza.",
+    "tags": [
+      "Mendoza",
+      "atardecer",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "anita_sodeado.jpg",
+    "description": "Mi amiga Anita tomando soda. Ese día vimos una peli terrible.",
+    "tags": [
+      "Anita",
+      "soda",
+      "foto"
+    ]
+  },
+  {
+    "file": "28250011.JPG",
+    "description": "@eze siendo lindo en un ascensor",
+    "tags": [
+      "Buenos Aires",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "28250001.JPG",
+    "description": "Palacio Paz en Buenos Aires.",
+    "tags": [
+      "Buenos Aires",
+      "vacaciones",
+      "foto"
+    ]
+  }
+]

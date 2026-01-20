@@ -1,0 +1,26 @@
+{
+  "name": "digital-garden",
+  "version": "1.0.0",
+  "description": "A personal digital garden with Frutiger Aero aesthetic",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsx src/build.ts",
+    "new-note": "tsx src/new-note.ts"
+  },
+  "keywords": ["digital-garden", "notes", "markdown", "frutiger-aero"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "chokidar": "^3.5.3",
+    "express": "^4.18.2",
+    "gray-matter": "^4.0.3",
+    "marked": "^11.1.0"
+  }
+}
