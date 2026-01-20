@@ -7,8 +7,13 @@ updated: 2026-01-21
 
 # Bienvenidxs! 🌿
 
-Soy Sofi y este es mi rinconcito de internet. Es un experimento y también es un juego. Es un lugar donde tomo notas de lo que leo y organizo un poco lo que pienso. Este es mi [jardín digital](/notes/jardines) y cómo en cualquier jardín hay cosas que todavía están creciendo.
+Este es mi rinconcito de internet. Es un experimento y también es un juego. Es un lugar donde tomo notas de lo que leo y organizo un poco lo que pienso. Este es mi [jardín digital](/notes/jardines) y cómo en cualquier jardín hay cosas que todavía están creciendo.
 
+## Sobre mí
+
+Soy Sofi, diva virtual, fanática de los panchitos, las pelis noventeras y la soda en sifón. Me gusta el software libre y soy una nostálgica de una internet que no llegué a vivir tanto. 
+
+También soy licenciada en física. Para todo lo que tiene que ver con mi trabajo podés entrar [a mi portfolio](https://sofips.dev.ar/).
 
 ## Qué hay acá?
 
@@ -20,7 +25,7 @@ Soy Sofi y este es mi rinconcito de internet. Es un experimento y también es un
 
 ## Por qué?
 
-Muchos de los jardines que visité tienen su propio manifiesto explicando la filosofía atrás de la creación de un sitio web propio. Yo no estoy segura de saber escribir tan bien. Sí creo que hay cosas que resuenan conmigo y con la forma en la que me quiero vincular con internet. Creo que hay que volver a adueñarnos de nuestros espacios digitales y volver a jugar con lo que hacemos ahí. También creo que el ejercicio de escribir permite ser 
+Muchos de los jardines que visité tienen su propio manifiesto explicando la filosofía atrás de la creación de un sitio web propio. Yo no estoy segura de saber escribir tan bien. Sí creo que hay cosas que resuenan conmigo y con la forma en la que me quiero vincular con internet. Creo que hay que volver a adueñarnos de nuestros espacios digitales y volver a jugar con lo que hacemos ahí, volver a explorar, que sean lindos, maximalistas, llenos de animaciones, llenos de cringe y de color. También creo que el ejercicio de escribir presenta cierta resistencia al scrolleo infinito.  
 
 ## Cómo está hecho?
 

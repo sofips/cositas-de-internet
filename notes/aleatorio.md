@@ -17,7 +17,8 @@ Esta lista reúne sitios web externos que se abren al azar cuando hacés clic en
 
 <script>
   // Load and display external sites list
-  fetch('/external-sites.json')
+  const basePath = window.BASE_PATH || '';
+  fetch(basePath + '/external-sites.json')
     .then(r => r.json())
     .then(sites => {
       const listEl = document.getElementById('external-sites-list');
