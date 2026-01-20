@@ -2,17 +2,18 @@ import { Note, getAllNotes } from './notes.js';
 import { getGalleryImages } from './gallery.js';
 
 const SITE_TITLE = '✧ Cositas de Internet ✧';
+const BASE_PATH = process.env.BASE_PATH || '';
 
 // Generate random data for all pages
 function getRandomData(): string {
   const notes = getAllNotes();
   const images = getGalleryImages();
   
-  const noteLinks = notes.map(n => '/notes/' + n.slug + '.html');
+  const noteLinks = notes.map(n => BASE_PATH + '/notes/' + n.slug + '.html');
   const photoTags = [...new Set(images.flatMap(img => img.tags))];
-  const photoLinks = photoTags.map(t => '/fotos/' + encodeURIComponent(t) + '.html');
+  const photoLinks = photoTags.map(t => BASE_PATH + '/fotos/' + encodeURIComponent(t) + '.html');
   
-  return JSON.stringify([...noteLinks, ...photoLinks, '/fotos/']);
+  return JSON.stringify([...noteLinks, ...photoLinks, BASE_PATH + '/fotos/']);
 }
 
 export function baseLayout(content: string, title = SITE_TITLE): string {
@@ -27,7 +28,7 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=${ASSET_VERSION}">
+  <link rel="stylesheet" href="${BASE_PATH}/styles.css?v=${ASSET_VERSION}">
 </head>
 <body>
   <!-- Frutiger Aero Background Elements -->
@@ -69,11 +70,11 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   <div class="star star-8">✧</div>
   
   <nav class="glass-nav">
-    <a href="/" class="logo">Cositas de Internet</a>
+    <a href="${BASE_PATH}/" class="logo">Cositas de Internet</a>
     <div class="nav-links">
-      <a href="/">Inicio</a>
-      <a href="/fotos/">Fotos</a>
-      <a href="/tags/">Etiquetas</a>
+      <a href="${BASE_PATH}/">Inicio</a>
+      <a href="${BASE_PATH}/fotos/">Fotos</a>
+      <a href="${BASE_PATH}/tags/">Etiquetas</a>
       <button onclick="goRandom()" class="random-btn">🔀</button>
     </div>
   </nav>
@@ -172,7 +173,8 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
       }
       
       function loadWord() {
-        fetch('/definitions.json?v=${ASSET_VERSION}')
+        const basePath = '${BASE_PATH}';
+        fetch(basePath + '/definitions.json?v=${ASSET_VERSION}')
           .then(r => r.json())
           .then(arr => {
             if (Array.isArray(arr) && arr.length) {
@@ -203,8 +205,9 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
     // External sites for luck button - loaded from JSON
     let externalSitesLoaded = false;
     let externalSites = [];
+    const basePath = '${BASE_PATH}';
     
-    fetch('/external-sites.json?v=${ASSET_VERSION}')
+    fetch(basePath + '/external-sites.json?v=${ASSET_VERSION}')
       .then(r => r.json())
       .then(sites => {
         if (Array.isArray(sites) && sites.length) {
@@ -234,7 +237,7 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
 export function homeTemplate(notes: Note[]): string {
   const noteCards = notes.map(note => `
     <article class="note-card glass-card">
-      <a href="/notes/${note.slug}.html">
+      <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
@@ -272,7 +275,7 @@ export function homeTemplate(notes: Note[]): string {
             <div class="carousel-track">
               ${getGalleryImages().map(img => `
               <div class="carousel-slide" data-description="${img.description}" data-tags="${img.tags.join(', ')}">
-                <img src="/images/${img.file}" alt="${img.description || img.file}">
+                <img src="${BASE_PATH}/images/${img.file}" alt="${img.description || img.file}">
               </div>`).join('')}
             </div>
           </div>
@@ -291,7 +294,7 @@ export function homeTemplate(notes: Note[]): string {
         <aside class="definition-card glass-card">
           <div class="definition-badge">[ VOY A TENER SUERTE ]</div>
           <button class="definition-refresh" onclick="goExternal()">sitio web al azar ✨</button>
-          <a class="definition-source" href="/notes/aleatorio.html">ver lista completa ↗</a>
+          <a class="definition-source" href="${BASE_PATH}/notes/aleatorio.html">ver lista completa ↗</a>
         </aside>
       </div>
     </section>
@@ -310,14 +313,14 @@ export function noteTemplate(note: Note): string {
           <span class="date">Creado: ${note.createdAt.toLocaleDateString('es-ES')}</span>
         </div>
         <div class="tags">
-          ${note.tags.filter(t => t !== 'public').map(tag => `<a href="/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
+          ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
         </div>
       </header>
       <div class="note-content">
         ${note.html}
       </div>
       <footer class="note-footer">
-        <a href="/" class="back-link">← Volver al principio</a>
+        <a href="${BASE_PATH}/" class="back-link">← Volver al principio</a>
       </footer>
     </article>
   `;
@@ -329,7 +332,7 @@ export function tagsTemplate(tags: Map<string, number>): string {
   const tagItems = Array.from(tags.entries())
     .sort((a, b) => b[1] - a[1])
     .map(([tag, count]) => `
-      <a href="/tags/${tag}.html" class="tag-item glass-card">
+      <a href="${BASE_PATH}/tags/${tag}.html" class="tag-item glass-card">
         <span class="tag-name">${tag}</span>
         <span class="tag-count">${count}</span>
       </a>
@@ -350,7 +353,7 @@ export function tagsTemplate(tags: Map<string, number>): string {
 export function tagNotesTemplate(tag: string, notes: Note[]): string {
   const noteCards = notes.map(note => `
     <article class="note-card glass-card">
-      <a href="/notes/${note.slug}.html">
+      <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
@@ -363,7 +366,7 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
   const content = `
     <section class="tag-notes-page">
       <h1>Etiqueta: ${tag}</h1>
-      <a href="/tags/" class="back-link">← Todas las etiquetas</a>
+      <a href="${BASE_PATH}/tags/" class="back-link">← Todas las etiquetas</a>
       <div class="notes-grid">
         ${noteCards || '<p class="empty-state">¡No hay notas con esta etiqueta todavía!</p>'}
       </div>
@@ -378,7 +381,7 @@ export function notFoundTemplate(): string {
     <section class="not-found glass-card">
       <h1>404</h1>
       <p>// Error: Recurso no encontrado en la base de datos</p>
-      <a href="/" class="back-link">← Volver al inicio</a>
+      <a href="${BASE_PATH}/" class="back-link">← Volver al inicio</a>
     </section>
   `;
 
@@ -395,12 +398,12 @@ export function galleryTemplate(filterTag?: string): string {
   const allTags = [...new Set(images.flatMap(img => img.tags))].sort();
   
   const tagFilters = allTags.map(tag => `
-    <a href="/fotos/${encodeURIComponent(tag)}.html" class="tag ${filterTag === tag ? 'active' : ''}">${tag}</a>
+    <a href="${BASE_PATH}/fotos/${encodeURIComponent(tag)}.html" class="tag ${filterTag === tag ? 'active' : ''}">${tag}</a>
   `).join('');
   
   const galleryItems = filteredImages.map(img => `
     <div class="gallery-item" data-description="${img.description}" data-tags="${img.tags.join(', ')}">
-      <img src="/images/${img.file}" alt="${img.description || img.file}" loading="lazy">
+      <img src="${BASE_PATH}/images/${img.file}" alt="${img.description || img.file}" loading="lazy">
     </div>
   `).join('');
 
@@ -408,13 +411,13 @@ export function galleryTemplate(filterTag?: string): string {
     <section class="gallery-page">
       <h1><span class="pixel-arrow">▸</span> Fotos ${filterTag ? `<span class="filter-tag">/ ${filterTag}</span>` : ''}</h1>
       <div class="gallery-filters">
-        <a href="/fotos/" class="tag ${!filterTag ? 'active' : ''}">Todas</a>
+        <a href="${BASE_PATH}/fotos/" class="tag ${!filterTag ? 'active' : ''}">Todas</a>
         ${tagFilters}
       </div>
       <div class="gallery-grid">
         ${galleryItems || '<p class="empty-state">¡No hay fotos todavía!</p>'}
       </div>
-      <a href="/" class="back-link">← Volver al inicio</a>
+      <a href="${BASE_PATH}/" class="back-link">← Volver al inicio</a>
     </section>
   `;
 
