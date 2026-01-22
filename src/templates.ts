@@ -234,6 +234,16 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
       }
     }
   </script>
+
+  <!-- Bubble Cursor Effect -->
+  <script type="module">
+    import { bubbleCursor } from 'https://unpkg.com/cursor-effects@latest/dist/esm.js';
+    
+    bubbleCursor({
+      fillColor: "#f771b4",
+      strokeColor: "#e6f1f7",
+    });
+  </script>
 </body>
 </html>`;
 }
