@@ -20,19 +20,9 @@
     "description": "Perros infinitos"
   },
   {
-    "url": "https://www.pointerpointer.com/",
-    "title": "Pointer Pointer",
-    "description": "Fotos que señalan tu cursor"
-  },
-  {
     "url": "https://archive.org/web/",
     "title": "Internet Archive Wayback Machine",
     "description": "Viaja al pasado de internet"
-  },
-  {
-    "url": "https://theuselessweb.com/",
-    "title": "The Useless Web",
-    "description": "Sitios web inútiles pero divertidos"
   },
   {
     "url": "https://www.reddit.com/r/internetisbeautiful/",
@@ -45,8 +35,24 @@
     "description": "Explorar sitios web personales"
   },
   {
-    "url": "https://wiby.me/surprise/",
-    "title": "Wiby",
-    "description": "Motor de búsqueda de la vieja web"
+    "url": "https://emulation.gametechwiki.com/index.php/Main_Page",
+    "title": "Emulation General Wiki",
+    "description": "Recursos y guías sobre emuladores de videojuegos"
+  },
+  {
+    "url": "https://indieweb.org/Getting_Started",
+    "title": "IndieWeb Getting Started",
+    "description": "Guía para crear tu propio sitio web personal"
+  },
+  {
+    "url": "https://www.vertexmeadow.xyz",
+    "title": "Vertex Meadow",
+    "description": " Herramienta para renderizar imagenes 2D como terrenos 3D explorables."
+  },
+  {
+    "url": "https://optical.toys",
+    "title": "Optical Toys",
+    "description": "Colección de ilusiones ópticas interactivas."
   }
 ]
+  

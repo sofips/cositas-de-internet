@@ -8,7 +8,12 @@
     "build": "tsx src/build.ts",
     "new-note": "tsx src/new-note.ts"
   },
-  "keywords": ["digital-garden", "notes", "markdown", "frutiger-aero"],
+  "keywords": [
+    "digital-garden",
+    "notes",
+    "markdown",
+    "frutiger-aero"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
@@ -19,6 +24,7 @@
   },
   "dependencies": {
     "chokidar": "^3.5.3",
+    "cursor-effects": "^1.0.18",
     "express": "^4.18.2",
     "gray-matter": "^4.0.3",
     "marked": "^11.1.0"
