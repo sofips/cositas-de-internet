@@ -27,6 +27,7 @@ export interface NoteMetadata {
 
 const NOTES_DIR = path.join(__dirname, '../notes');
 const PUBLIC_DIR = path.join(__dirname, '../public');
+const BASE_PATH = '/cositas-de-internet';
 
 export function ensureDirectories(): void {
   if (!fs.existsSync(NOTES_DIR)) {
@@ -75,23 +76,23 @@ function rewriteInternalLinks(src: string): string {
   out = out.replace(/\[\[\s*([\w\-\/ ]+)\s*\]\]/g, (_m, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     const text = slug.split('/').pop().replace(/-/g, ' ');
-    return `[${text}](/notes/${cleanSlug}.html)`;
+    return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
   out = out.replace(/\[\[\s*([^\]|]+)\|\s*([\w\-\/ ]+)\s*\]\]/g, (_m, text, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
-    return `[${text}](/notes/${cleanSlug}.html)`;
+    return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
 
   // [text](slug) where slug is bare (no scheme, no leading /, no #, no extension)
   out = out.replace(/\[([^\]]+)\]\((?!https?:|mailto:|#|\/)([\w\-\/ ]+)\)/g, (_m, text, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
-    return `[${text}](/notes/${cleanSlug}.html)`;
+    return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
 
   // [text](/notes/slug) -> ensure .html and URL-encode
   out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/ ]+)(?!\.html)(\))/g, (_m, text, slug, close) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
-    return `[${text}](/notes/${cleanSlug}.html)`;
+    return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
 
   return out;
