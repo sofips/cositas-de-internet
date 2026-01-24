@@ -71,23 +71,27 @@ export function parseNote(filePath: string): Note | null {
 // Convert [[wikilinks]] and relative markdown links to /notes/slug.html
 function rewriteInternalLinks(src: string): string {
   let out = src;
-  // [[slug]] or [[text|slug]] patterns -> link to notes
-  out = out.replace(/\[\[\s*([\w\-\/]+)\s*\]\]/g, (_m, slug) => {
-    const text = slug.split('/').pop();
-    return `[${text}](/notes/${slug}.html)`;
+  // [[slug]] or [[text|slug]] patterns -> link to notes (URL-encoded)
+  out = out.replace(/\[\[\s*([\w\-\/ ]+)\s*\]\]/g, (_m, slug) => {
+    const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
+    const text = slug.split('/').pop().replace(/-/g, ' ');
+    return `[${text}](/notes/${cleanSlug}.html)`;
   });
-  out = out.replace(/\[\[\s*([^\]|]+)\|\s*([\w\-\/]+)\s*\]\]/g, (_m, text, slug) => {
-    return `[${text}](/notes/${slug}.html)`;
+  out = out.replace(/\[\[\s*([^\]|]+)\|\s*([\w\-\/ ]+)\s*\]\]/g, (_m, text, slug) => {
+    const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
+    return `[${text}](/notes/${cleanSlug}.html)`;
   });
 
   // [text](slug) where slug is bare (no scheme, no leading /, no #, no extension)
-  out = out.replace(/\[([^\]]+)\]\((?!https?:|mailto:|#|\/)([\w\-\/]+)\)/g, (_m, text, slug) => {
-    return `[${text}](/notes/${slug}.html)`;
+  out = out.replace(/\[([^\]]+)\]\((?!https?:|mailto:|#|\/)([\w\-\/ ]+)\)/g, (_m, text, slug) => {
+    const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
+    return `[${text}](/notes/${cleanSlug}.html)`;
   });
 
-  // [text](/notes/slug) -> ensure .html
-  out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/]+)(?!\.html)(\))/g, (_m, text, slug, close) => {
-    return `[${text}](/notes/${slug}.html)`;
+  // [text](/notes/slug) -> ensure .html and URL-encode
+  out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/ ]+)(?!\.html)(\))/g, (_m, text, slug, close) => {
+    const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
+    return `[${text}](/notes/${cleanSlug}.html)`;
   });
 
   return out;
