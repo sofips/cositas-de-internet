@@ -63,6 +63,11 @@
     "url": "https://flux.garden",
     "title": "Flux Garden",
     "description": "App simple para hostear tu propio jardin virtual."
+  },
+  {
+    "url":"https://www.cositodelclima.com/cordoba-cba-ar",
+    "title":"Cositodelclima ",
+    "description":"Un cosito del clima que cambia de color segun la temperatura actual."
   }
 ]
   
