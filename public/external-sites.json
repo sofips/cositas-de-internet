@@ -53,6 +53,16 @@
     "url": "https://optical.toys",
     "title": "Optical Toys",
     "description": "Colección de ilusiones ópticas interactivas."
+  },
+  {
+    "url": "https://libreplanet.org/wiki/Main_Page",
+    "title": "LibrePlanet",
+    "description": "Wiki del software libre."
+  },
+  {
+    "url": "https://flux.garden",
+    "title": "Flux Garden",
+    "description": "App simple para hostear tu propio jardin virtual."
   }
 ]
   
