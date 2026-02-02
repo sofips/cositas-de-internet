@@ -27,7 +27,7 @@ export interface NoteMetadata {
 
 const NOTES_DIR = path.join(__dirname, '../notes');
 const PUBLIC_DIR = path.join(__dirname, '../public');
-const BASE_PATH = '/cositas-de-internet';
+const BASE_PATH = process.env.BASE_PATH || '';
 
 export function ensureDirectories(): void {
   if (!fs.existsSync(NOTES_DIR)) {
