@@ -84,6 +84,16 @@
     "title":"Redactle",
     "description":"Juego de adivinar articulos de Wikipedia con palabras ocultas."
   },
+  {
+    "url": "https://www.fieggen.com/shoelace/",
+    "title": "Ian's Shoe Lace Site",
+    "description": "Una página sobre cordones de zapatos"
+  },
+  {
+    "url": "https://xikipedia.org/",
+    "title": "Xikipedia",
+    "description": "Feed algorítmico de artículos de Wikipedia"
+  }
   
 ]
   
