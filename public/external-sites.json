@@ -63,6 +63,27 @@
     "url": "https://wplace.live/",
     "title": "Wplace",
     "description": "Para dibujar el mundo."
-  }
+  },
+  {
+    "url": "https://libreplanet.org/wiki/Main_Page",
+    "title": "LibrePlanet",
+    "description": "Wiki del software libre."
+  },
+  {
+    "url": "https://flux.garden",
+    "title": "Flux Garden",
+    "description": "App simple para hostear tu propio jardin virtual."
+  },
+  {
+    "url":"https://www.cositodelclima.com/cordoba-cba-ar",
+    "title":"Cositodelclima ",
+    "description":"Un cosito del clima que cambia de color segun la temperatura actual."
+  },
+  {
+    "url":"https://redactle.net/",
+    "title":"Redactle",
+    "description":"Juego de adivinar articulos de Wikipedia con palabras ocultas."
+  },
+  
 ]
   

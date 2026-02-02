@@ -68,5 +68,26 @@
       "vacaciones",
       "foto"
     ]
+  },
+  {
+    "file": "karaoke.jpg",
+    "description": "Karaoke en el teatro",
+    "tags":[
+      "Buenos Aires",
+      "vacaciones",
+      "karaoke",
+      "yo",
+      "foto"
+    ]
+  },
+  {
+    "file": "club404.jpg",
+    "description": "Club 404 en Buenos Aires.",
+    "tags": [
+      "Buenos Aires",
+      "vacaciones",
+      "retro",
+      "foto"
+    ]
   }
 ]
