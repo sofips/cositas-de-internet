@@ -20,6 +20,11 @@
     ]
   },
   {
+    "file": "karaoke.jpeg",
+    "description": "",
+    "tags": []
+  },
+  {
     "file": "guiso_con_mis_amigas.jpg",
     "description": "Comiendo guiso con mis amigas.",
     "tags": [
@@ -31,6 +36,11 @@
       "Day",
       "foto"
     ]
+  },
+  {
+    "file": "club404.jpeg",
+    "description": "",
+    "tags": []
   },
   {
     "file": "atardecer_uspallata.jpg",
@@ -66,27 +76,6 @@
     "tags": [
       "Buenos Aires",
       "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "karaoke.jpg",
-    "description": "Karaoke en el teatro",
-    "tags":[
-      "Buenos Aires",
-      "vacaciones",
-      "karaoke",
-      "yo",
-      "foto"
-    ]
-  },
-  {
-    "file": "club404.jpg",
-    "description": "Club 404 en Buenos Aires.",
-    "tags": [
-      "Buenos Aires",
-      "vacaciones",
-      "retro",
       "foto"
     ]
   }

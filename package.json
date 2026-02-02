@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsx src/build.ts",
+    "build": "BASE_PATH=/cositas-de-internet tsx src/build.ts",
     "new-note": "tsx src/new-note.ts"
   },
   "keywords": [
