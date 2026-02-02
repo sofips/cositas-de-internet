@@ -68,6 +68,12 @@
     "url":"https://www.cositodelclima.com/cordoba-cba-ar",
     "title":"Cositodelclima ",
     "description":"Un cosito del clima que cambia de color segun la temperatura actual."
-  }
+  },
+  {
+    "url":"https://redactle.net/",
+    "title":"Redactle",
+    "description":"Juego de adivinar articulos de Wikipedia con palabras ocultas."
+  },
+  
 ]
   
