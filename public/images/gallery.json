@@ -21,8 +21,8 @@
   },
   {
     "file": "karaoke.jpeg",
-    "description": "",
-    "tags": []
+    "description": "Noche de karaoke en un teatro vacío.",
+    "tags": ["foto", "karaoke", "Buenos Aires", "vacaciones" ]
   },
   {
     "file": "guiso_con_mis_amigas.jpg",
@@ -39,8 +39,8 @@
   },
   {
     "file": "club404.jpeg",
-    "description": "",
-    "tags": []
+    "description": "Club 404 en Buenos Aires.",
+    "tags": ["foto", "Buenos Aires", "vacaciones", "retro"]
   },
   {
     "file": "atardecer_uspallata.jpg",
@@ -63,7 +63,7 @@
   },
   {
     "file": "28250011.JPG",
-    "description": "@eze siendo lindo en un ascensor",
+    "description": "eze siendo lindo en un ascensor",
     "tags": [
       "Buenos Aires",
       "vacaciones",
