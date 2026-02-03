@@ -61,7 +61,7 @@
   {
     "term": "Gemonías",
     "definition": "Castigo sumamente infamante",
-
+    "source": null
   },
   {
     "term": "Berretín",
@@ -75,10 +75,7 @@
   },
   {
     "term": "Okapi",
-    "definition": "mamífero herbívoro, el pariente vivo más cercano de la jirafa."
+    "definition": "mamífero herbívoro, el pariente vivo más cercano de la jirafa.",
+    "source": null
   }
-
-
-  
-  
 ]
