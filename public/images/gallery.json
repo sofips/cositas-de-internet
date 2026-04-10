@@ -78,5 +78,48 @@
       "vacaciones",
       "foto"
     ]
+  },
+  {
+    "file": "caminata_a_dos_rios.jpg",
+    "description": "Un altar en Isla Grande, Brasil.",
+    "tags": [
+      "Brasil",
+      "Isla Grande",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "feria_de_san_cristobal.jpg",
+    "description": "Feria de San Cristóbal en Rio de Janeiro.",
+    "tags": [
+      "Rio de Janeiro",
+      "Brasil",
+      "feria",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "un_honguito.jpg",
+    "description": "Hongo que vi en Isla Grande, Brasil.",
+    "tags": [
+      "Brasil",
+      "Hongo",
+      "Isla Grande",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
+    "file": "pan_de_azucar.jpg",
+    "description": "Pan de Azúcar en Rio de Janeiro, Brasil.",
+    "tags": [
+      "Brasil",
+      "Rio de Janeiro",
+      "Pan de Azúcar",
+      "vacaciones",
+      "foto"
+    ]
   }
 ]
