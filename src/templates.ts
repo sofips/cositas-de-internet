@@ -176,3 +176,38 @@ export function notFoundTemplate(): string {
 
   return baseLayout(content, '404 | Digital Garden');
 }
+
+import { getGalleryImages } from './gallery.js';
+
+export function galleryTemplate(tag?: string): string {
+  let images = getGalleryImages();
+  if (tag) {
+    images = images.filter(img => img.tags.includes(tag));
+  }
+
+  const tagList = Array.from(new Set(getGalleryImages().flatMap(i => i.tags))).sort();
+
+  const content = `
+    <section class="gallery-page">
+      <h1>Photo Gallery${tag ? ` - ${tag}` : ''}</h1>
+      <div class="tags-nav">
+        <a href="/fotos" class="tag ${!tag ? 'active' : ''}">All</a>
+        ${tagList.map(t => `<a href="/fotos/${t}.html" class="tag ${t === tag ? 'active' : ''}">${t}</a>`).join('')}
+      </div>
+      <div class="gallery-grid">
+        ${images.map(img => `
+          <div class="gallery-item glass-card">
+            <img src="/images/${img.file}" alt="${img.description}">
+            <p>${img.description}</p>
+            <div class="tags">
+              ${img.tags.map(t => `<span class="tag">${t}</span>`).join('')}
+            </div>
+          </div>
+        `).join('')}
+        ${images.length === 0 ? '<p class="empty-state">No photos yet!</p>' : ''}
+      </div>
+    </section>
+  `;
+
+  return baseLayout(content, `Gallery${tag ? ` - ${tag}` : ''} | Digital Garden`);
+}

@@ -10,6 +10,17 @@
     ]
   },
   {
+    "file": "un_honguito.jpg",
+    "description": "Hongo que vi en Isla Grande, Brasil.",
+    "tags": [
+      "Brasil",
+      "Hongo",
+      "Isla Grande",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
     "file": "tunuyan.jpg",
     "description": "Paisaje en Tunuyán, Mendoza.",
     "tags": [
@@ -20,9 +31,19 @@
     ]
   },
   {
+    "file": "pan_de_Azucar.jpg",
+    "description": "",
+    "tags": []
+  },
+  {
     "file": "karaoke.jpeg",
     "description": "Noche de karaoke en un teatro vacío.",
-    "tags": ["foto", "karaoke", "Buenos Aires", "vacaciones" ]
+    "tags": [
+      "foto",
+      "karaoke",
+      "Buenos Aires",
+      "vacaciones"
+    ]
   },
   {
     "file": "guiso_con_mis_amigas.jpg",
@@ -38,9 +59,35 @@
     ]
   },
   {
+    "file": "feria_de_san_cristobal.jpg",
+    "description": "Feria de San Cristóbal en Rio de Janeiro.",
+    "tags": [
+      "Rio de Janeiro",
+      "Brasil",
+      "feria",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
     "file": "club404.jpeg",
     "description": "Club 404 en Buenos Aires.",
-    "tags": ["foto", "Buenos Aires", "vacaciones", "retro"]
+    "tags": [
+      "foto",
+      "Buenos Aires",
+      "vacaciones",
+      "retro"
+    ]
+  },
+  {
+    "file": "caminata_a_dos_rios.jpg",
+    "description": "Un altar en Isla Grande, Brasil.",
+    "tags": [
+      "Brasil",
+      "Isla Grande",
+      "vacaciones",
+      "foto"
+    ]
   },
   {
     "file": "atardecer_uspallata.jpg",
@@ -75,49 +122,6 @@
     "description": "Palacio Paz en Buenos Aires.",
     "tags": [
       "Buenos Aires",
-      "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "caminata_a_dos_rios.jpg",
-    "description": "Un altar en Isla Grande, Brasil.",
-    "tags": [
-      "Brasil",
-      "Isla Grande",
-      "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "feria_de_san_cristobal.jpg",
-    "description": "Feria de San Cristóbal en Rio de Janeiro.",
-    "tags": [
-      "Rio de Janeiro",
-      "Brasil",
-      "feria",
-      "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "un_honguito.jpg",
-    "description": "Hongo que vi en Isla Grande, Brasil.",
-    "tags": [
-      "Brasil",
-      "Hongo",
-      "Isla Grande",
-      "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "pan_de_azucar.jpg",
-    "description": "Pan de Azúcar en Rio de Janeiro, Brasil.",
-    "tags": [
-      "Brasil",
-      "Rio de Janeiro",
-      "Pan de Azúcar",
       "vacaciones",
       "foto"
     ]
