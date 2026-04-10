@@ -93,6 +93,11 @@
     "url": "https://xikipedia.org/",
     "title": "Xikipedia",
     "description": "Feed algorítmico de artículos de Wikipedia"
+  },
+  {
+    "url": "https://rotatingsandwiches.com",
+    "title": "Rotating Sandwiches",
+    "description": "Un sitio web que muestra sándwiches rotando en 3D"
   }
   
 ]
