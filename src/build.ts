@@ -92,7 +92,7 @@ function build(): void {
   const images = getGalleryImages();
   const imageTags = [...new Set(images.flatMap(img => img.tags))];
   for (const tag of imageTags) {
-    fs.writeFileSync(path.join(fotosDir, `${tag}.html`), galleryTemplate(tag));
+    fs.writeFileSync(path.join(fotosDir, `${encodeURIComponent(tag)}.html`), galleryTemplate(tag));
     console.log(`   ✓ ${tag}`);
   }
 

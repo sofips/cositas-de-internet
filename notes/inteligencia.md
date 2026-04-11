@@ -1,0 +1,11 @@
+# Chat JPEG es un JPEG borroso de la realidad
+
+"Pensar es olvidar diferencias"
+
+Simplificar la realidad es inevitable para comprenderla.
+
+Entrenar un modelo con output de otro modelo, el resultado se va a ir degradando. 
+
+cuanto más texto generado por
+modelos de lenguaje grande se publique en la Web, más se convierte la Web en una
+versión más borrosa de sí misma.

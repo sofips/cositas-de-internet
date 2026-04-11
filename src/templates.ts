@@ -130,7 +130,7 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
       modalImg.src = img.src;
       modalDesc.textContent = desc;
       modalTags.innerHTML = tags.split(',').filter(t => t.trim())
-        .map(t => '<a href=\"/fotos/' + encodeURIComponent(t.trim()) + '.html\" class=\"tag\">' + t.trim() + '</a>').join('');
+        .map(t => '<a href="' + window.BASE_PATH + '/fotos/' + encodeURIComponent(t.trim()) + '.html" class="tag">' + t.trim() + '</a>').join('');
     }
     
     slides.forEach((slide, idx) => {
