@@ -2,7 +2,7 @@
 title: Qué son los jardines digitales
 tags: [public, bienvenida, meta, intro, jardines, hipertexto]
 created: 2026-01-13
-updated: 2026-01-13
+updated: 2026-04-12
 ---
 
 # ¿Qué es un jardín digital?
@@ -77,4 +77,8 @@ Para eso, unx debe indicar en qué estado de desarrollo está una idea. Maggie c
 
 Otra opción es una introducción corta sobre el estado de esa entrada. También puede diseñarse un sistema propio, algunas guidelines pueden leerse [en este artículo de Gwern.net](https://gwern.net/about#confidence-tags). 
 
-4) **Divertidos, personales y experimentales**: Los jardines 
+4) **Divertidos, personales y experimentales**
+
+5) **Diversidad de contenido**
+
+6) **Soberanía**
