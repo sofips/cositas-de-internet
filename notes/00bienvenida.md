@@ -32,7 +32,7 @@ Muchos de los jardines que visité tienen su propio manifiesto explicando la fil
 
 ## Cómo está hecho?
 
-Hay muchas [herramientas y tutoriales](https://github.com/MaggieAppleton/digital-gardeners) para aprender a hacer tu propio jardín digital. En particular, yo hice el mío desde 0 ayudándome mucho con Copilot porque quería personalización a fondo. 
+Hay muchas [herramientas y tutoriales](https://github.com/MaggieAppleton/digital-gardeners) para aprender a hacer tu propio jardín digital. En particular, yo hice el mío desde 0 ayudándome mucho con Copilot porque quería personalización a fondo y que fuera muy maximalista. 
 
 Las notas se agregan como archivos en markdown. Las fotos, las palabras y los sitios externos se corresponden con entradas en distintos diccionarios. 
 
