@@ -8,6 +8,8 @@ updated: 2026-04-10
 
 # Lista de sitios aleatorios
 
+**Estado:** 🌳 árbol
+
 Esta lista reúne sitios web externos que se abren al azar cuando hacés clic en el botón "voy a tener suerte".
 
 ## Sitios web

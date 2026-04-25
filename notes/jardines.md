@@ -8,6 +8,8 @@ updated: 2026-04-12
 
 # ¿Qué es un jardín digital?
 
+**Estado:** 🌳 árbol
+
 Mi primer acercamiento a los jardines digitales fue un día en el que me encontré con el subreddit [r/DigitalGardens](https://www.reddit.com/r/DigitalGardens/). La descripción los define como "Wikis personales, espacios digitales de notas y pensamiento". La definición y la comunidad me parecieron muy lindas. Como venía rosqueando mucho la idea de armar una página propia y las redes sociales alternativas, me metí a investigar un poco más. 
 
 La descripción más exhaustiva y, posiblemente, la más citada la hace Maggie Appleton [en su propio jardín digital](https://maggieappleton.com/garden-history) donde afirma:

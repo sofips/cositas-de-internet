@@ -8,6 +8,8 @@ updated: 2026-01-13
 
 # Getting Started with Notes 📝
 
+**Estado:** 🪴 plantita
+
 Learn how to create and manage notes in your digital garden.
 
 ## Creating Notes
