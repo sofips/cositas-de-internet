@@ -1,13 +1,12 @@
 ---
 title: Lista de sitios aleatorios
 tags: [public, meta, estado-arbol]
+estado: "🌳 árbol"
 created: 2026-01-19
 updated: 2026-04-10
 ---
 
 # Lista de sitios aleatorios
-
-> Estado: 🌳 arbol
 
 Esta lista reúne sitios web externos que se abren al azar cuando hacés clic en el botón "voy a tener suerte".
 

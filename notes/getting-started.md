@@ -1,13 +1,12 @@
 ---
 title: Getting Started with Notes
 tags: [tutorial, tips, estado-plantita]
+estado: "🪴 plantita"
 created: 2026-01-13
 updated: 2026-01-13
 ---
 
 # Getting Started with Notes 📝
-
-> Estado: 🪴 plantita
 
 Learn how to create and manage notes in your digital garden.
 

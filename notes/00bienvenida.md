@@ -1,13 +1,12 @@
 ---
 title: Bienvenidxs a mi jardín digital
 tags: [public, bienvenida, meta, intro, jardines, estado-arbol]
+estado: "🌳 árbol"
 created: 2026-01-13
 updated: 2026-01-21
 ---
 
 # Bienvenidxs! 🌿
-
-> Estado: 🌳 arbol
 
 Este es mi rinconcito de internet. Es un experimento y también es un juego. Es un lugar donde tomo notas de lo que leo y organizo un poco lo que pienso. Este es mi [jardín digital](/notes/jardines) y cómo en cualquier jardín hay cosas que todavía están creciendo.
 
