@@ -1,11 +1,13 @@
 ---
 title: Getting Started with Notes
-tags: [tutorial, tips]
+tags: [tutorial, tips, estado-plantita]
 created: 2026-01-13
 updated: 2026-01-13
 ---
 
 # Getting Started with Notes 📝
+
+> Estado: 🪴 plantita
 
 Learn how to create and manage notes in your digital garden.
 
@@ -66,6 +68,23 @@ tags: [draft, personal]
 ```
 
 Private notes stay in your `notes/` folder but won't appear on the built site.
+
+## Growth Status Tags (Garden Stages)
+
+You can add one status tag per note to show its maturity level in your garden:
+
+| Tag | Meaning |
+|-----|---------|
+| `estado-semilla` | Raw idea, quick capture |
+| `estado-brote` | Early draft, growing direction |
+| `estado-plantita` | Solid note, still evolving |
+| `estado-arbol` | Mature note, well-developed |
+
+Example:
+
+```yaml
+tags: [public, hipertexto, estado-brote]
+```
 
 ## Best Practices
 

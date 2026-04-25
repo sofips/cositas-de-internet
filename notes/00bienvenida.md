@@ -1,11 +1,13 @@
 ---
 title: Bienvenidxs a mi jardín digital
-tags: [public, bienvenida, meta, intro, jardines]
+tags: [public, bienvenida, meta, intro, jardines, estado-arbol]
 created: 2026-01-13
 updated: 2026-01-21
 ---
 
 # Bienvenidxs! 🌿
+
+> Estado: 🌳 arbol
 
 Este es mi rinconcito de internet. Es un experimento y también es un juego. Es un lugar donde tomo notas de lo que leo y organizo un poco lo que pienso. Este es mi [jardín digital](/notes/jardines) y cómo en cualquier jardín hay cosas que todavía están creciendo.
 
@@ -34,3 +36,5 @@ Hay muchas [herramientas y tutoriales](https://github.com/MaggieAppleton/digital
 Las notas se agregan como archivos en markdown. Las fotos, las palabras y los sitios externos se corresponden con entradas en distintos diccionarios. 
 
 Para publicar, todas las notas se procesan y se genera un sitio estático que puede subirse a GitHub Pages o a otros hostings.
+
+Hice un pequeño template para que cada persona pueda empezaar su propio jardín que se puede descargar [acá]{https://github.com/sofips/template-jardin-digital}.

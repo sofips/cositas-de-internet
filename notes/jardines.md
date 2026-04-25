@@ -1,11 +1,13 @@
 ---
 title: Qué son los jardines digitales
-tags: [public, bienvenida, meta, intro, jardines, hipertexto]
+tags: [public, bienvenida, meta, intro, jardines, hipertexto, estado-arbol]
 created: 2026-01-13
 updated: 2026-04-12
 ---
 
 # ¿Qué es un jardín digital?
+
+> Estado: 🌳 arbol
 
 Mi primer acercamiento a los jardines digitales fue un día en el que me encontré con el subreddit [r/DigitalGardens](https://www.reddit.com/r/DigitalGardens/). La descripción los define como "Wikis personales, espacios digitales de notas y pensamiento". La definición y la comunidad me parecieron muy lindas. Como venía rosqueando mucho la idea de armar una página propia y las redes sociales alternativas, me metí a investigar un poco más. 
 

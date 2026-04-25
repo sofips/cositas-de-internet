@@ -1,4 +1,13 @@
+---
+title: Chat JPEG es un JPEG borroso de la realidad
+tags: [estado-semilla, reflexion, ia]
+created: 2026-04-25
+updated: 2026-04-25
+---
+
 # Chat JPEG es un JPEG borroso de la realidad
+
+> Estado: 🌱 semilla
 
 "Pensar es olvidar diferencias"
 
