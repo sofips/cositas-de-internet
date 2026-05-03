@@ -333,3 +333,4 @@ sudo systemctl status cositas-bot
 Con esto el bot queda persistente en el servidor y se vuelve a levantar solo si reinicio la máquina.
 
 
+El código completo está en [este repo](https://github.com/sofips/cositas-de-internet/tree/main/bot).
