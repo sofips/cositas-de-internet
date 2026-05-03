@@ -14,14 +14,14 @@ const API = 'https://api.github.com';
 
 function headers() {
   return {
-    Authorization: \`Bearer \${config.github.token}\`,
+    Authorization: `Bearer ${config.github.token}`,
     Accept: 'application/vnd.github+json',
     'User-Agent': 'cositas-bot',
   };
 }
 
 export async function getDefinitionsFromGitHub(): Promise<{ definitions: Definition[]; sha: string }> {
-  const url = \`\${API}/repos/\${OWNER}/\${REPO}/contents/\${PATH}\`;
+  const url = `${API}/repos/${OWNER}/${REPO}/contents/${PATH}`;
   const res = await axios.get(url, { headers: headers() });
   const data = res.data;
   const content = Buffer.from(data.content, 'base64').toString('utf8');
@@ -31,7 +31,7 @@ export async function getDefinitionsFromGitHub(): Promise<{ definitions: Definit
 
 export async function addDefinitionViaGitHubAPI(newDef: Definition): Promise<{ ok: boolean; reason?: string }> {
   try {
-    const url = \`\${API}/repos/\${OWNER}/\${REPO}/contents/\${PATH}\`;
+    const url = `${API}/repos/${OWNER}/${REPO}/contents/${PATH}`;
     const res = await axios.get(url, { headers: headers() });
     const data = res.data;
     const content = Buffer.from(data.content, 'base64').toString('utf8');
@@ -45,7 +45,7 @@ export async function addDefinitionViaGitHubAPI(newDef: Definition): Promise<{ o
     const newContent = Buffer.from(JSON.stringify(defs, null, 2) + '\n', 'utf8').toString('base64');
 
     const body = {
-      message: \`🤖 Bot: agregar palabra '\${newDef.term}'\`,
+      message: `🤖 Bot: agregar palabra '${newDef.term}'`,
       content: newContent,
       sha: data.sha,
       committer: {
