@@ -82,11 +82,14 @@ Ahora, vamos a pasar a crear el bot. Para eso creamos otro directorio:
 ```bash
 mkdir /opt/cositas-bot/app/bot
 ```
+
+### Extracción de palabras y definiciones
+
 En primer lugar, vamos a crear el archivo que define la funcionalidad principal del bot llamado `dictionary.ts`. Este script será el encargado de buscar las definiciones de las palabras online. Para eso, toma un término, consulta una fuente externa, limpia el texto y devuelve un resultado listo. 
 
 Veamos cómo se construye parte por parte:
 
-Primero, importamos `axios` que se usa para hacer requests HTTP, es decir, buscar algo afuera. En este caso, lo usaremos para consultar Wikitionary que será nuestra fuente de definiciones.
+Primero, importamos `axios` que se usa para hacer requests HTTP, es decir, buscar algo afuera. En este caso, lo usaremos para consultar Wiktionary que será nuestra fuente de definiciones.
 
 ```TypeScript
 import axios from 'axios';
@@ -99,6 +102,43 @@ export interface DictionaryResult {
   term: string;
   definition: string;
   source: string | null;
+}
+```
+
+Necesitamos una función para extraer el texto de Wiktionary:
+
+**fetchWiktionaryWikitext**
+
+```TypeScript
+
+async function fetchWiktionaryWikitext(term: string):
+ Promise<string | null> {
+  const url = `https://es.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(term)}&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&redirects=1`;
+
+  const response = await axios.get(url, {
+    timeout: 20000,
+    headers: {
+      'User-Agent': 'cositas-bot/1.0',
+    },
+  });
+
+  const pages = response.data?.query?.pages;
+  if (!Array.isArray(pages) || pages.length === 0) {
+    return null;
+  }
+
+  const page = pages[0];
+  if (!page || page.missing) {
+    return null;
+  }
+
+  const revision = page.revisions?.[0];
+  const content =
+    revision?.slots?.main?.content ??
+    revision?.content ??
+    '';
+
+  return typeof content === 'string' && content.trim() ? content : null;
 }
 ```
 
@@ -146,9 +186,9 @@ Es necesario idear varias funciones para limpiar el texto. Si vemos cómo son la
 <references />
 --- RAW WIKITEXT END ---
 ```
-Para nuestro propósito, quisiéramos algo más resumido, así que usamos:
+Para nuestro propósito, quisiéramos algo más resumido, así que usamos distintas funciones. 
 
-#### normalizeText
+**normalizeText**
 
 Esta función reemplaza espacios múltiples, saca carácteres raros, y elimina espacios al principio y al final
 
@@ -161,7 +201,7 @@ function normalizeText(text: string): string {
 }
 ```
 
-#### replaceUsefulTemplates
+**replaceUsefulTemplates**
 
 Esta función quita algunos de los templates que usa el motor de MediaWiki, por ejemplo: {{uso|coloquial}}. Para eso detecta las llaves {}, separa el contenido y decide cuáles le sirven. 
 
@@ -203,7 +243,7 @@ function replaceUsefulTemplates(text: string): string {
 }
 ```
 
-#### cleanWikiText
+**cleanWikiText**
 
 La última función encadena las otras dos y también elimina referencias, formatos y HTML. 
 
@@ -223,8 +263,9 @@ function cleanWikiText(text: string): string {
 }
 ```
 
-#### extractDefinitionFromWikitext
+**extractDefinitionFromWikitext**
 
+Esta es la función que decide qué usar aplicando todas las otras. Para eso, recorre línea por línea, detecta cuándo empieza la sección en español, identifica qué líneas contienen definiciones, limpia el contenido y devuelve la primera que encuentra.
 
 
 ```TypeScript
@@ -274,3 +315,35 @@ function extractDefinitionFromWikitext(wikitext: string): string | null {
   return fallbackDefinition;
 }
 ```
+
+Con todo esto, se hace la función principal:
+
+**searchDefinition**
+
+```TypeScript
+
+export async function searchDefinition(term: string): Promise<DictionaryResult | null> {
+  try {
+    const wikitext = await fetchWiktionaryWikitext(term);
+    if (!wikitext) {
+      return null;
+    }
+
+    const definition = extractDefinitionFromWikitext(wikitext);
+    if (!definition) {
+      return null;
+    }
+
+    return {
+      term,
+      definition,
+      source: `https://es.wiktionary.org/wiki/${encodeURIComponent(term)}`,
+    };
+  } catch (error: any) {
+    console.error('searchDefinition error:', error?.message || error);
+    return null;
+  }
+}
+```
+
+> Lo poco que sé de TypeScript: `const` define valores fijos del sistema, `function` encapsula lógica, `async` permite trabajar con operaciones que tardan como requests HTTP, y `export` expone la función principal para que otros archivos (como el bot) puedan usarla.
