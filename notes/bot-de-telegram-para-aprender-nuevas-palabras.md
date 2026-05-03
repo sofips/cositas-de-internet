@@ -1,7 +1,7 @@
 ---
 title: Bot de Telegram para aprender nuevas palabras
 tags: [public, tutorial, tech]
-estado: "🌱 semilla"
+estado: "🪴 plantita"
 created: 2026-05-03
 updated: 2026-05-03
 
@@ -9,7 +9,7 @@ updated: 2026-05-03
 
 # Bot de Telegram para aprender nuevas palabras
 
-**Estado:** 🌿 brote
+**Estado:** 🪴 plantita
 
 Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me preguntó *Cómo puede alguien retener esta información ultra específica?*
 
@@ -105,15 +105,15 @@ export interface DictionaryResult {
 }
 ```
 
-Necesitamos una función para extraer el texto de Wiktionary:
-
-**fetchWiktionaryWikitext**
+Necesitamos una función para extraer el texto de Wiktionary, **fetchWiktionaryWikitext** define la fuente y algunas normalizaciones del texto accedido.
 
 ```TypeScript
 
 async function fetchWiktionaryWikitext(term: string):
  Promise<string | null> {
   const url = `https://es.wiktionary.org/w/api.php?action=query&titles=${encodeURIComponent(term)}&prop=revisions&rvprop=content&rvslots=main&format=json&formatversion=2&redirects=1`;
+
+  // acá usamos axios para acceder a la url definida anteriormente
 
   const response = await axios.get(url, {
     timeout: 20000,
@@ -142,7 +142,7 @@ async function fetchWiktionaryWikitext(term: string):
 }
 ```
 
-Es necesario idear varias funciones para limpiar el texto. Si vemos cómo son las salidas crudas de Wikidictionary, encontramos algo así:
+Es necesario idear varias funciones para limpiar el texto resultante. Si vemos cómo son las salidas crudas de Wikictionary, encontramos algo así:
 
 ```
 == {{lengua|es}} ==
@@ -186,139 +186,19 @@ Es necesario idear varias funciones para limpiar el texto. Si vemos cómo son la
 <references />
 --- RAW WIKITEXT END ---
 ```
-Para nuestro propósito, quisiéramos algo más resumido, así que usamos distintas funciones. 
 
-**normalizeText**
+Para nuestro propósito, quisiéramos algo más resumido, así que usamos distintas funciones, todas están disponibles [acá](https://github.com/sofips/cositas-de-internet/blob/main/bot/services/dictionary.ts).
 
-Esta función reemplaza espacios múltiples, saca carácteres raros, y elimina espacios al principio y al final
+**normalizeText**: Esta función reemplaza espacios múltiples, saca carácteres raros, y elimina espacios al principio y al final
 
-```TypeScript
-function normalizeText(text: string): string {
-      return text
-    .replace(/\s+/g, ' ')
-    .replace(/^[:;,\-–—]+\s*/, '')
-    .trim();
-}
-```
+**replaceUsefulTemplates**: Esta función quita algunos de los templates que usa el motor de MediaWiki, por ejemplo: {{uso|coloquial}}. Para eso detecta las llaves {}, separa el contenido y decide cuáles le sirven. 
 
-**replaceUsefulTemplates**
+**cleanWikiText**: La última función encadena las otras dos y también elimina referencias, formatos y HTML. 
 
-Esta función quita algunos de los templates que usa el motor de MediaWiki, por ejemplo: {{uso|coloquial}}. Para eso detecta las llaves {}, separa el contenido y decide cuáles le sirven. 
-
-```TypeScript
-function replaceUsefulTemplates(text: string): string {
-  return text.replace(/\{\{([^{}]+)\}\}/g, (_match, inner) => {
-    const parts = String(inner)
-      .split('|')
-      .map((part) => part.trim())
-      .filter(Boolean);
-
-    if (parts.length === 0) {
-      return '';
-    }
-
-    const name = parts[0].toLowerCase();
-    const args = parts.slice(1);
-
-    const passthroughTemplates = new Set([
-      'plm',
-      'csem',
-      'l',
-      't',
-      'uso',
-      'ámbito',
-      'ambito',
-      'sinónimo',
-      'sinonimo',
-      'hiperónimo',
-      'hiperonimo',
-    ]);
-
-    if (passthroughTemplates.has(name)) {
-      return args[0] || '';
-    }
-
-    return '';
-  });
-}
-```
-
-**cleanWikiText**
-
-La última función encadena las otras dos y también elimina referencias, formatos y HTML. 
-
-```TypeScript
-function cleanWikiText(text: string): string {
-  return normalizeText(
-    replaceUsefulTemplates(
-      text
-        .replace(/<ref[^>]*>[\s\S]*?<\/ref>/gi, ' ')
-        .replace(/<[^>]+>/g, ' ')
-        .replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '$2')
-        .replace(/\[\[([^\]]+)\]\]/g, '$1')
-        .replace(/'''+/g, '')
-        .replace(/''/g, '')
-    )
-  );
-}
-```
-
-**extractDefinitionFromWikitext**
-
-Esta es la función que decide qué usar aplicando todas las otras. Para eso, recorre línea por línea, detecta cuándo empieza la sección en español, identifica qué líneas contienen definiciones, limpia el contenido y devuelve la primera que encuentra.
+**extractDefinitionFromWikitext**: Esta es la función clave que decide qué usar aplicando todas las otras. Para eso, recorre línea por línea, detecta cuándo empieza la sección en español, identifica qué líneas contienen definiciones, limpia el contenido y devuelve la primera definición que encuentra.
 
 
-```TypeScript
-function extractDefinitionFromWikitext(wikitext: string): string | null {
-  const lines = wikitext.split(/\r?\n/);
-
-  const spanishSectionHeaderRegex = /^==\s*\{\{lengua\|es\}\}\s*==$/i;
-  const definitionLineRegex = /^;\s*\d+\s*:?\s*(.*)$/;
-
-  let inSpanishSection = false;
-  let fallbackDefinition: string | null = null;
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-
-    if (spanishSectionHeaderRegex.test(line)) {
-      inSpanishSection = true;
-      continue;
-    }
-
-    if (!inSpanishSection) {
-      continue;
-    }
-
-    const sectionHeaderMatch = line.match(/^===+\s*.*\s*===+$/);
-    if (sectionHeaderMatch && !/^===\s*\{\{sustantivo|^===\s*\{\{adjetivo|^===\s*\{\{verbo|^===\s*\{\{adverbio|^===\s*\{\{interjección|^===\s*\{\{interjeccion/i.test(line)) {
-      continue;
-    }
-
-    const definitionMatch = line.match(definitionLineRegex);
-    if (!definitionMatch) {
-      continue;
-    }
-
-    const cleaned = cleanWikiText(definitionMatch[1]);
-    if (!cleaned) {
-      continue;
-    }
-
-    if (!fallbackDefinition) {
-      fallbackDefinition = cleaned;
-    }
-
-    return cleaned;
-  }
-
-  return fallbackDefinition;
-}
-```
-
-Con todo esto, se hace la función principal:
-
-**searchDefinition**
+Con todo esto, se hace la función principal **searchDefinition**:
 
 ```TypeScript
 
@@ -350,4 +230,106 @@ export async function searchDefinition(term: string): Promise<DictionaryResult |
 
 ### Orquestación del bot
 
-A través de 
+A través del archivo [main.ts](https://github.com/sofips/cositas-de-internet/blob/main/bot/main.ts) se orquesta todo el funcionamiento del bot.
+
+```TypeScript
+import { Telegraf } from 'telegraf'; \\telegram bot
+import { config } from './config.js'; \\variables de entorno
+import { searchDefinition } from './services/dictionary.js'; \\función para buscar en Wiktionary
+import { addDefinitionViaGitHubAPI } from './services/git.js'; \\función para hacer push a GitHub
+```
+
+Primero lo inicializamos usando Telegraf:
+
+```TypeScript
+const bot = new Telegraf(config.telegram.token);
+```
+
+Tenemos que mapear de alguna forma el estado del flujo en que nos encontramos. Para ello, lxs usuarixs tienen una sesión con: en qué paso están y qué palabra se está procesando.
+
+```TypeScript
+const sessions = new Map<number, Session>();
+```
+
+Luego se definen los comandos, que puede aceptar el bot:
+```TypeScript
+bot.command('start', ...)
+bot.command('help', ...)
+bot.command('add', ...)
+```
+El comando `/add` cambia el estado, haciendo que a partir de ahí el bot espere una palabra: `s.state = 'waiting-term';`. 
+
+Cuando la recibe, llama a `searchDefinition`. 
+
+Si encuentra la definición, muestra término, definición y fuente. Además, muestra botones para confirmar, rechazar y editar.
+
+Si no encuentra o pedimos editar, cambia de estado a `s.state = 'edit'` y recibe el siguiente mensaje como definición. 
+
+Las acciones se gestionan con botones interactivos. Por ejemplo, para el botón de confirmación tenemos: `bot.action('confirm_def', ...)` y eso será lo que dispare: 
+`await addDefinitionViaGitHubAPI(s.pending);` que vive en el archivo `git.ts` (encargado de interactuar con git).
+
+Para lanzar el bot, se utiliza `bot.launch()`
+
+Acá se puede ver un ejemplo de flujo.
+
+Usuario: /add
+Bot:    "Escribí el término..."
+Usuario: "serendipia"
+Bot:    "🔍 Buscando..."
+Bot:    "Término: serendipia
+         Definición: descubrimiento valioso que se produce de manera accidental o casual...
+         [✅ Confirmar] [❌ Rechazar] [✏️ Editar]"
+Usuario: [✅ Confirmar]
+Bot:    "💾 Guardando en GitHub..."
+Bot:    "✨ Palabra 'serendipia' agregada. Se publicará en ~1-2 minutos."
+        (en GitHub: nuevo commit en definitions.json)
+        (en tu sitio: palabra aparece en "Palabra del día" en ~2 min)
+
+### Configuración
+
+Las claves (Telegram, GitHub, etc.) se cargan desde variables de entorno usando `config.ts`, para no exponer datos sensibles en el código. 
+
+Para obtener un Token de Bot de Telegram hay que crear un bot con @BotFather y utilizar el comando `\newbot` y para obtener tu ID podés usar @userinfobot.
+
+
+### Último paso: dejar el bot corriendo en el servidor
+
+Hasta ahora el bot ya puede buscar palabras y guardar cambios en GitHub. Pero si quiero que siga vivo aunque cierre la terminal o reinicie la máquina, necesito dejarlo corriendo como un servicio del sistema.
+
+Para eso uso `systemd`, que es el mecanismo de Linux para administrar servicios en segundo plano. En este caso, `systemd` va a:
+
+- arrancar el bot automáticamente cuando prende el servidor
+- reiniciarlo si se cae
+- mantenerlo corriendo sin depender de una sesión SSH abierta
+
+El archivo del servicio queda así:
+
+```ini
+[Unit]
+Description=Bot de Telegram para definiciones
+After=network.target
+
+[Service]
+Type=simple
+User=botdefs
+WorkingDirectory=/opt/cositas-bot/app
+EnvironmentFile=/opt/cositas-bot/config/bot.env
+ExecStart=/usr/bin/node /opt/cositas-bot/app/node_modules/.bin/tsx /opt/cositas-bot/app/bot/main.ts
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
+
+Después de crear el archivo, hay que recargar systemd, activar el servicio y arrancarlo:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable cositas-bot
+sudo systemctl restart cositas-bot
+sudo systemctl status cositas-bot
+```
+
+Con esto el bot queda persistente en el servidor y se vuelve a levantar solo si reinicio la máquina.
+
+
