@@ -1,18 +1,29 @@
 # Cositas de Internet 🌿
 
-Un jardín digital personal con estética retro pixel/Frutiger Aero. Toma notas en Markdown, comparte fotos, aprende palabras nuevas y descubre sitios web curiosos.
+Este es el código de mi [jardín digital personal](https://sofips.github.io/cositas-de-internet/notes/00bienvenida.html).
 
-## ✨ Características
+Para saber más sobre jardines digitales:
+[Qué son los jardínes digitales?](https://sofips.github.io/cositas-de-internet/notes/jardines.html)
 
-- 🎨 **Diseño Retro Pixel** - Glass morphism, gradientes, burbujas flotantes, estrellas y peces
-- 📝 **Notas en Markdown** - Escribe en formato Markdown simple con enlaces entre notas
-- 🔒 **Notas Públicas/Privadas** - Controla visibilidad con tags
-- 🏷️ **Sistema de Etiquetas** - Organiza y navega notas por tema
-- 📸 **Galería de Fotos** - Carrusel horizontal con modal, navegación con teclado y filtros por tags
+Disclaimer: Todo este código es altamente experimental.
+
+## ✨ Qué hace?
+
+- 📝 **Notas de Markdown a HTML** - Escribo las notas en markdown y después se genera automáticamente un HTML asociado
+
+- 🔒 **Notas Públicas/Privadas** - La visibilidad de las notas se gestiona con tags en el markdown
+
+- 🏷️ **Sistema de Etiquetas** - Las notas están organizadas con etiquetas temáticas
+
+- 📸 **Galería de Fotos** - Carrusel horizontal con navegación con teclado y filtros por tags
+
 - 📚 **Palabra del Día** - Widget con definiciones desde JSON
+
 - 🎲 **Voy a Tener Suerte** - Botón de sitio web aleatorio desde lista personalizable
-- 🔀 **Navegación Aleatoria** - Explora notas y fotos al azar
-- 🚀 **Generación de Sitio Estático** - Despliega en GitHub Pages, Neocities o cualquier host
+
+- 🔀 **Navegación Aleatoria** - Para explorar notas y fotos al azar
+
+- 🚀 **Generación de Sitio Estático** - Se despliega en GitHub Pages o cualquier host
 
 ## 🚀 Inicio Rápido
 
@@ -27,8 +38,6 @@ npm install
 ```bash
 npm run dev
 ```
-
-Visita [http://localhost:3000](http://localhost:3000) para ver tu jardín.
 
 ### Crear una Nueva Nota
 
@@ -110,6 +119,8 @@ Edita `public/definitions.json` para agregar palabras:
 ]
 ```
 
+Estoy trabajando en un bot de telegram para agregarlas desde ahí. Se puede leer más [acá](https://sofips.github.io/cositas-de-internet/notes/bot-de-telegram-para-aprender-nuevas-palabras.html).
+
 ## 🎲 Voy a Tener Suerte
 
 Edita `public/external-sites.json` para personalizar sitios aleatorios:
@@ -174,71 +185,14 @@ Edita `public/external-sites.json` para personalizar sitios aleatorios:
 
 ### ¿Cómo funciona?
 
-En **desarrollo** (`npm run dev`), Express sirve el sitio localmente y detecta cuando guardás cambios en tus notas. Cuando editás un `.md`, el sistema lee el frontmatter (título, tags, fechas), convierte el Markdown a HTML, y muestra los cambios automáticamente en el navegador.
 
-Para **publicar** (`npm run build`), el generador lee todas tus notas públicas, crea una página HTML por cada una, organiza las etiquetas, arma la galería con las fotos, y guarda todo en la carpeta `dist/`. El resultado es un sitio completamente estático (sin servidor) que podés subir a GitHub Pages, Neocities o cualquier hosting. Si usás GitHub, el workflow automatiza esto: cada vez que hacés push, se genera y publica automáticamente.
+Para **publicar** (`npm run build`), el generador lee todas las notas públicas, crea una página HTML por cada una, organiza las etiquetas, arma la galería con las fotos, y guarda todo en la carpeta `dist/`. El resultado es un sitio completamente estático (sin servidor) que podés subir a cualquier hosting. Como la hosteo en GitHub, el workflow automatiza genera y publica automáticamente cada vez que hago push.
 
-## 🎨 Personalización
 
-### Colores
 
-Edita `public/styles.css` y modifica las variables CSS:
-
-```css
-:root {
-  --primary-bg: #0a0e27;
-  --fuchsia: #ff00ff;
-  --cyan-bright: #00ffff;
-  --purple: #9d00ff;
-  /* ... más variables */
-}
-```
-
-### Título del Sitio
-
-Modifica la constante `SITE_TITLE` en `src/templates.ts`.
-
-### Animaciones de Fondo
-
-Ajusta `.bubble`, `.fish`, `.star` en `styles.css` para cambiar cantidad o velocidad.
-
-## 🚀 Deploy
-
-El comando `npm run build` genera un sitio estático en `dist/`. Despliega en:
-
-### GitHub Pages
+#### GitHub Pages
 
 1. Habilita GitHub Pages en Settings → Pages
 2. Selecciona la rama `gh-pages` (creada automáticamente por el workflow)
 3. El sitio se despliega automáticamente con cada push a main
 
-### Neocities
-
-1. Compila: `npm run build`
-2. Sube el contenido de `dist/` a Neocities
-
-### Otros Hosts
-
-Compatible con Netlify, Vercel, Cloudflare Pages y cualquier hosting estático.
-
-## 📋 Cache Busting
-
-El sitio usa cache-busting automático basado en timestamp para CSS y JSON, asegurando que los usuarios vean siempre la versión más reciente.
-
-## 🎯 Características Avanzadas
-
-- **Modal de fotos** con navegación por teclado (flechas, Escape)
-- **Responsive design** con colapso de sidebar en móviles
-- **Links entre notas** con reescritura automática para compatibilidad estática
-- **Scroll horizontal** en carrusel de fotos con scrollbar personalizada
-- **Fetch dinámico** de definiciones y sitios externos desde JSON
-
-## 📝 Notas
-
-- Los archivos en `dist/` se generan automáticamente - no los edites manualmente
-- `gallery.json` se actualiza automáticamente al detectar nuevas imágenes
-- El random button incluye tanto notas como categorías de fotos
-
-## 📄 Licencia
-
-MIT

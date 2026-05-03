@@ -29,7 +29,7 @@ Actualmente, la forma en la que funciona es a través de un diccionario (`.json`
 
  ## Implementación
 
- Usando Copilot diseñé un plan para implementar esto. 
+Ayudándome con Copilot para hacerlo, quiero crear un bot que agrega palabras al archivo `definitions.json`. Voy a usar [Wiktionary](https://es.wiktionary.org/wiki/Wikcionario:Portada) como fuente. Así, el objetivo final es que el bot extraiga la definición de allí, permita editarla y la guarde en el repo usando la API de GitHub para que GitHub Actions reconstruya el sitio posteriormente.
 
  ### Paso 1: Set-up del servidor
 
@@ -83,7 +83,7 @@ Ahora, vamos a pasar a crear el bot. Para eso creamos otro directorio:
 mkdir /opt/cositas-bot/app/bot
 ```
 
-### Extracción de palabras y definiciones
+### Extracción de palabras y definiciones (`dictionary.ts`)
 
 En primer lugar, vamos a crear el archivo que define la funcionalidad principal del bot llamado `dictionary.ts`. Este script será el encargado de buscar las definiciones de las palabras online. Para eso, toma un término, consulta una fuente externa, limpia el texto y devuelve un resultado listo. 
 
@@ -347,3 +347,7 @@ export async function searchDefinition(term: string): Promise<DictionaryResult |
 ```
 
 > Lo poco que sé de TypeScript: `const` define valores fijos del sistema, `function` encapsula lógica, `async` permite trabajar con operaciones que tardan como requests HTTP, y `export` expone la función principal para que otros archivos (como el bot) puedan usarla.
+
+### Orquestación del bot
+
+A través de 
