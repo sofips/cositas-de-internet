@@ -13,6 +13,7 @@ export interface Note {
   content: string;
   html: string;
   tags: string[];
+  estado?: string;
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -23,6 +24,7 @@ export interface NoteMetadata {
   tags?: string[];
   created?: string;
   updated?: string;
+  estado?: string;
 }
 
 const NOTES_DIR = path.join(__dirname, '../notes');
@@ -62,6 +64,7 @@ export function parseNote(filePath: string): Note | null {
       content,
       html: marked(rewritten) as string,
       tags,
+      estado: metadata.estado,
       isPublic,
       createdAt: metadata.created ? new Date(metadata.created) : stats.birthtime,
       updatedAt: metadata.updated ? new Date(metadata.updated) : stats.mtime,

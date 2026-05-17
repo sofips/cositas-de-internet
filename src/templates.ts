@@ -16,6 +16,11 @@ function getRandomData(): string {
   return JSON.stringify([...noteLinks, ...photoLinks, BASE_PATH + '/fotos/']);
 }
 
+function estadoDisplay(estado?: string): string {
+  if (!estado) return '';
+  return `<div class="note-estado"><strong>${estado}</strong></div>`;
+}
+
 export function baseLayout(content: string, title = SITE_TITLE): string {
   const randomLinks = getRandomData();
   const ASSET_VERSION = String(Math.floor(Date.now() / 1000));
@@ -259,6 +264,7 @@ export function homeTemplate(notes: Note[]): string {
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
         </div>
+        ${estadoDisplay(note.estado)}
         <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
@@ -329,6 +335,7 @@ export function noteTemplate(note: Note): string {
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
         </div>
+        ${estadoDisplay(note.estado)}
       </header>
       <div class="note-content">
         ${note.html}
@@ -372,6 +379,7 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
         <div class="note-meta">
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
         </div>
+        ${estadoDisplay(note.estado)}
         <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
