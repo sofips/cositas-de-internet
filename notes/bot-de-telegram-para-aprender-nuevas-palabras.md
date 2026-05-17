@@ -3,7 +3,7 @@ title: Bot de Telegram para aprender nuevas palabras
 tags: [public, tutorial, tech]
 estado: "🌳 árbol"
 created: 2026-05-03
-updated: 2026-05-03
+updated: 2026-05-17
 
 ---
 
@@ -11,7 +11,7 @@ updated: 2026-05-03
 
 **Estado:** 🌳 árbol
 
-Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me preguntó *Cómo puede alguien retener esta información ultra específica?*
+Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me preguntó *Cómo puedo acordarme de estas palabras raras que aparecen en todos los crucigramas?*
 
 Con esto en mente, junto con el sueño de algún día ser participante de Pasapalabra, agregué a este humilde jardín el widget **Palabra del día** que debería llamarse **Palabras que aprendo haciendo crucigramas** y que puede verse en el [inicio](https://sofips.github.io/cositas-de-internet/). Hoy, quiero ir un paso más allá, y e intentar automatizar la carga de palabras.
 
