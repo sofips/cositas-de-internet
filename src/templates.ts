@@ -18,7 +18,7 @@ function getRandomData(): string {
 
 function estadoDisplay(estado?: string): string {
   if (!estado) return '';
-  return `<span class="note-estado">${estado}</span>`;
+  return `<span class="note-estado"><strong>Estado:</strong> ${estado}</span>`;
 }
 
 export function baseLayout(content: string, title = SITE_TITLE): string {
