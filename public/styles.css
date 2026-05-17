@@ -944,13 +944,19 @@ body {
   color: var(--yellow);
 }
 
-.note-meta { 
-  display: flex; 
-  gap: 1rem; 
-  margin-bottom: 0.75rem; 
-  font-size: 0.75rem; 
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
   color: var(--text-secondary);
   font-family: 'Space Mono', monospace;
+}
+
+.note-meta .note-estado {
+  flex-basis: 100%;
+  font-size: 0.8rem;
 }
 
 .preview { 

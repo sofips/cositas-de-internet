@@ -259,7 +259,8 @@ export function homeTemplate(notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          <span class="date">${note.updatedAt.toLocaleDateString()}</span>
+          <span class="date">Creado: ${note.createdAt.toLocaleDateString()}</span>
+          <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString()}</span>
           ${estadoDisplay(note.estado)}
         </div>
         <div class="tags">
@@ -377,7 +378,8 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          <span class="date">${note.updatedAt.toLocaleDateString()}</span>
+          <span class="date">Creado: ${note.createdAt.toLocaleDateString()}</span>
+          <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString()}</span>
           ${estadoDisplay(note.estado)}
         </div>
         <p class="preview">${note.content.replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
