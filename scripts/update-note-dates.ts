@@ -10,6 +10,7 @@ if (stagedFiles.length === 0) process.exit(0);
 const repoRoot = process.cwd();
 
 const STAGES = ['🌱 semilla', '🌿 brote', '🪴 plantita', '🌳 árbol'];
+const ESTADO_NAMES = new Set(['semilla', 'brote', 'plantita', 'árbol']);
 
 function suggestEstado(body: string): string {
   const words = body.trim().split(/\s+/).filter(Boolean).length;
@@ -39,13 +40,13 @@ for (const relPath of stagedFiles) {
 
   let modified = false;
 
-  // Inject `created` if missing
+  // --- Dates ---
+
   if (!/^created:/m.test(content.slice(0, frontmatterEnd))) {
     content = content.replace(/^---\n/, `---\ncreated: ${today}\n`);
     modified = true;
   }
 
-  // Update or inject `updated`
   const updatedRegex = /^(updated:\s*)(.+)$/m;
   if (updatedRegex.test(content)) {
     const next = content.replace(updatedRegex, `$1${today}`);
@@ -55,21 +56,41 @@ for (const relPath of stagedFiles) {
     modified = true;
   }
 
-  // Auto-advance `estado` based on word count (never retreat)
-  const body = content.slice(frontmatterEnd + 4); // skip closing ---\n
-  const suggested = suggestEstado(body);
-  const suggestedIdx = STAGES.indexOf(suggested);
+  // --- Estado ---
 
   const estadoMatch = content.match(/^estado:\s*["']?(.+?)["']?\s*$/m);
-  const currentEstado = estadoMatch ? estadoMatch[1].trim() : null;
-  const currentIdx = currentEstado ? STAGES.indexOf(currentEstado) : -1;
+  let currentEstado = estadoMatch ? estadoMatch[1].trim() : null;
 
+  // Only set if missing — never override a value the user chose
   if (!currentEstado) {
-    content = content.replace(/^(updated:.+)$/m, `$1\nestado: "${suggested}"`);
+    const body = content.slice(frontmatterEnd + 4);
+    currentEstado = suggestEstado(body);
+    content = content.replace(/^(updated:.+)$/m, `$1\nestado: "${currentEstado}"`);
     modified = true;
-  } else if (currentIdx >= 0 && suggestedIdx > currentIdx) {
-    content = content.replace(/^estado:.*$/m, `estado: "${suggested}"`);
-    modified = true;
+  }
+
+  if (currentEstado) {
+    // e.g. "🌱 semilla" → "semilla"
+    const estadoName = currentEstado.split(' ').slice(1).join(' ');
+
+    // Sync **Estado:** line in body if it exists
+    const estadoLineRegex = /^\*\*Estado:\*\*\s*.+$/m;
+    if (estadoLineRegex.test(content)) {
+      const next = content.replace(estadoLineRegex, `**Estado:** ${currentEstado}`);
+      if (next !== content) { content = next; modified = true; }
+    }
+
+    // Sync estado tag: remove old stage tag, add current one
+    if (ESTADO_NAMES.has(estadoName)) {
+      const tagsMatch = content.match(/^(tags:\s*\[)([^\]]*)\]/m);
+      if (tagsMatch) {
+        const existing = tagsMatch[2].split(',').map(t => t.trim()).filter(Boolean);
+        const filtered = existing.filter(t => !ESTADO_NAMES.has(t));
+        filtered.push(estadoName);
+        const next = content.replace(/^tags:\s*\[([^\]]*)\]/m, `tags: [${filtered.join(', ')}]`);
+        if (next !== content) { content = next; modified = true; }
+      }
+    }
   }
 
   if (modified) {
