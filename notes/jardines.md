@@ -1,9 +1,9 @@
 ---
 title: Qué son los jardines digitales
-tags: [public, bienvenida, meta, intro, jardines, hipertexto, estado-arbol]
+tags: [public, bienvenida, meta, intro, jardines, hipertexto, estado-arbol, árbol]
 estado: "🌳 árbol"
 created: 2026-01-13
-updated: 2026-04-12
+updated: 2026-05-17
 ---
 
 # ¿Qué es un jardín digital?
@@ -76,12 +76,42 @@ Esto es bueno porque alivia presión sobre escritura y opinión perfecta pero ad
 
 3) **Imperfecciones y aprender en público**: En un perfecto balance entre caos y cultivo, los jardines son imperfectos por diseño. Siguen la filosofía de [Aprender en Público](https://www.swyx.io/learn-in-public). 
 
-Para eso, unx debe indicar en qué estado de desarrollo está una idea. Maggie continúa con las metáforas de jardinería separando en semillas (*seedlings*), bulbos (*buddings*) y hojas perennes (*evergreens*); aclarando en cada uno cuándo se plantó y cuándo regó por última vez. 
+Para eso, unx debe indicar en qué estado de desarrollo está una idea. Maggie continúa con las metáforas de jardinería separando en semillas (*seedlings*), bulbos (*buddings*) y hojas perennes (*evergreens*); aclarando en cada uno cuándo se plantó y cuándo regó por última vez.
 
 Otra opción es una introducción corta sobre el estado de esa entrada. También puede diseñarse un sistema propio, algunas guidelines pueden leerse [en este artículo de Gwern.net](https://gwern.net/about#confidence-tags). 
 
+En este jardín, mi sistema está siendo a través de etiquetas que denoten el estado de desarrollo, inspirado por el sistema de Maggie:
+
+🌱 Semilla: Simplemente planteando la idea de que en algún momento quiero escribir de eso.
+🌿 Brote: Idea en formación, puede ser simplemente una colección de pensamientos o una introducción.
+🪴 Plantita: Tiene forma, pero todavía falta desarrollar varios puntos.
+🌳 Árbol: Ideas cerradas, aunque nunca terminadas. Como todo árbol, crecen y se podan con el tiempo.
+
+También agrego a cada entrada las fechas de publicación y de última actualización.
+
 4) **Divertidos, personales y experimentales**
+
+La no homogeneidad es una característica central de los jardínes. Una semilla del mismo tipo dará resultados distintos en cada quién que la plante. Este concepto se traslada a la originalidad e individualidad de los jardines digitales. 
+
+Este tipo de espacios en la web nos permite expresarnos de una manera que refleje realmente lo que queremos mostrar. Para mí es fundamental experimentar con la estética en varios aspectos de mi vida. Mi jardín no puede ser la excepción.
+
+Las redes sociales actuales nos hacen publicar en un molde predeterminado que no siempre se adecúa a lo que queremos mostrar. Realmente considero relevante mi *situación sentimental*?, como mostraba en su momento Facebook. Por qué dejamos que otras personas diseñen el molde en el que nos mostramos? 
+
+Los jardines permiten diseñar nuestra experiencia digital a medida. Por ejemplo, yo quiero un apartado en el que se muestren las palabras que aprendo y como mi plantilla es mía puedo agregarlo. Más allá de todas las desventajas y contradicciones que ha generado la popularización de modelos de lenguaje, a mí me han permitido experimentar mucho con el desarrollo y diseño web. 
+
+En resumen, hay que volver a jugar en internet y diseñar internet jugando: *Hagamos Internet Lindo otra vez*. Qué vuelvan los perfiles ultra personalizados, los widgets divertidos, y kas cosas poco funcionales pero expresivas.
 
 5) **Diversidad de contenido**
 
+Todos los buenos jardínes tienen diversidad de cultivos. Dada la diversidad actual de contenido, está bueno pensar en agregar videos, fotos y toda clase de medios a nuestros jardines.
+
+
 6) **Soberanía**
+
+Cuando hacés un jardín, estás creando un pedacito de internet que es tuyo. La mayoría de las herramientas tienen como uno de sus objetivos que las entradas sean altamente portables. Por ejemplo, todas mis notas están escritas en Markdown y guardadas localmente en mi computadora. Incluso si github o alguno de los servicios que uso para levantar el sitio se cayeran, mis notas seguirían siendo accesibles para mí.
+
+Esto no sucede con las redes sociales convencionales. Descargar tu contenido o mudarlo no es tan sencillo. 
+
+En 2025 escuché a una serie de archivistas hablar de cómo las redes sociales actuales no permiten archivar su contenido para preservación digital. Si queremos que nuestro contenido pase a la historia, y forme parte de la construcción de internet en el tiempo, es mejor pensar en estas alternativas. Recuerdo que pusieron como ejemplo la creación de alguna fan page de algún artista, si quisieras que en muchos años alguien pueda leerla, mejor no hacer que eso sea decisión de una gran corporación.
+
+Recomiendo nuevamente el documental [How the Internet was Stolen](https://www.youtube.com/watch?v=oLLxpAZzy0s) y propongo que tratemos de recuperarlo un jardincito a la vez.
