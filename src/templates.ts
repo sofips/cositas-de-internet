@@ -16,9 +16,10 @@ function getRandomData(): string {
   return JSON.stringify([...noteLinks, ...photoLinks, BASE_PATH + '/fotos/']);
 }
 
-function estadoDisplay(estado?: string): string {
+function estadoDisplay(estado?: string, date?: string): string {
   if (!estado) return '';
-  return `<span class="note-estado"><strong>Estado:</strong> ${estado}</span>`;
+  const datePart = date ? ` (${date})` : '';
+  return `<span class="note-estado"><strong>Estado:</strong> ${estado}${datePart}</span>`;
 }
 
 export function baseLayout(content: string, title = SITE_TITLE): string {
@@ -259,9 +260,7 @@ export function homeTemplate(notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          <span class="date">Creado: ${note.createdAt.toLocaleDateString()}</span>
-          <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString()}</span>
-          ${estadoDisplay(note.estado)}
+          ${estadoDisplay(note.estado, note.updatedAt.toLocaleDateString())}
         </div>
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
@@ -378,9 +377,7 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          <span class="date">Creado: ${note.createdAt.toLocaleDateString()}</span>
-          <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString()}</span>
-          ${estadoDisplay(note.estado)}
+          ${estadoDisplay(note.estado, note.updatedAt.toLocaleDateString())}
         </div>
         <p class="preview">${note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
