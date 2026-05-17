@@ -82,10 +82,10 @@ Otra opción es una introducción corta sobre el estado de esa entrada. También
 
 En este jardín, mi sistema está siendo a través de etiquetas que denoten el estado de desarrollo, inspirado por el sistema de Maggie:
 
-🌱 Semilla: Simplemente planteando la idea de que en algún momento quiero escribir de eso.
-🌿 Brote: Idea en formación, puede ser simplemente una colección de pensamientos o una introducción.
-🪴 Plantita: Tiene forma, pero todavía falta desarrollar varios puntos.
-🌳 Árbol: Ideas cerradas, aunque nunca terminadas. Como todo árbol, crecen y se podan con el tiempo.
+- 🌱 Semilla: Simplemente planteando la idea de que en algún momento quiero escribir de eso.
+- 🌿 Brote: Idea en formación, puede ser simplemente una colección de pensamientos o una introducción.
+- 🪴 Plantita: Tiene forma, pero todavía falta desarrollar varios puntos.
+- 🌳 Árbol: Ideas cerradas, aunque nunca terminadas. Como todo árbol, crecen y se puden podar con el tiempo.
 
 También agrego a cada entrada las fechas de publicación y de última actualización.
 
