@@ -998,6 +998,11 @@ body {
   color: var(--text-secondary);
 }
 
+.note-header .note-estado {
+  display: block;
+  margin-top: 0.75rem;
+}
+
 /* ═══════════════════════════════════════════
    TAGS PAGE
    ═══════════════════════════════════════════ */

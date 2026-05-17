@@ -331,11 +331,11 @@ export function noteTemplate(note: Note): string {
         <div class="note-meta">
           <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString('es-ES')}</span>
           <span class="date">Creado: ${note.createdAt.toLocaleDateString('es-ES')}</span>
-          ${estadoDisplay(note.estado)}
         </div>
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
         </div>
+        ${estadoDisplay(note.estado)}
       </header>
       <div class="note-content">
         ${note.html}
