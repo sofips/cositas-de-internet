@@ -29,6 +29,9 @@ const NOTES_DIR = path.join(__dirname, '../notes');
 const PUBLIC_DIR = path.join(__dirname, '../public');
 const BASE_PATH = process.env.BASE_PATH || '';
 
+export const PUBLIC_TAG = 'public';
+export const PRIVATE_TAG = 'private';
+
 export function ensureDirectories(): void {
   if (!fs.existsSync(NOTES_DIR)) {
     fs.mkdirSync(NOTES_DIR, { recursive: true });
@@ -46,7 +49,7 @@ export function parseNote(filePath: string): Note | null {
     
     const slug = path.basename(filePath, '.md');
     const tags = metadata.tags || [];
-    const isPublic = tags.includes('public');
+    const isPublic = tags.includes(PUBLIC_TAG);
     
     const stats = fs.statSync(filePath);
     
@@ -90,7 +93,7 @@ function rewriteInternalLinks(src: string): string {
   });
 
   // [text](/notes/slug) -> ensure .html and URL-encode
-  out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/ ]+)(?!\.html)(\))/g, (_m, text, slug, close) => {
+  out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/ ]+)(?!\.html)(\))/g, (_m, text, slug, _close) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
@@ -136,7 +139,7 @@ export function getAllTags(includePrivate = false): Map<string, number> {
   
   for (const note of notes) {
     for (const tag of note.tags) {
-      if (tag !== 'public' && tag !== 'private') {
+      if (tag !== PUBLIC_TAG && tag !== PRIVATE_TAG) {
         tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
       }
     }

@@ -1,9 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getAllNotes, getAllTags, getNotesByTag, ensureDirectories } from './notes.js';
+import { getAllNotes, ensureDirectories, PUBLIC_TAG, PRIVATE_TAG } from './notes.js';
 import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, notFoundTemplate } from './templates.js';
-import { getGalleryImages } from './gallery.js';
+import { syncGalleryJson } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -70,11 +70,18 @@ function build(): void {
   const tagsDir = path.join(OUTPUT_DIR, 'tags');
   fs.mkdirSync(tagsDir, { recursive: true });
 
-  const tags = getAllTags();
+  const VISIBILITY_TAGS = new Set([PUBLIC_TAG, PRIVATE_TAG]);
+  const tags = new Map<string, number>();
+  for (const note of notes) {
+    for (const tag of note.tags) {
+      if (!VISIBILITY_TAGS.has(tag)) tags.set(tag, (tags.get(tag) || 0) + 1);
+    }
+  }
+
   fs.writeFileSync(path.join(tagsDir, 'index.html'), tagsTemplate(tags));
 
   for (const [tag] of tags) {
-    const tagNotes = getNotesByTag(tag);
+    const tagNotes = notes.filter(n => n.tags.includes(tag));
     const tagHtml = tagNotesTemplate(tag, tagNotes);
     fs.writeFileSync(path.join(tagsDir, `${tag}.html`), tagHtml);
     console.log(`   ✓ ${tag} (${tagNotes.length} notes)`);
@@ -89,7 +96,7 @@ function build(): void {
   fs.writeFileSync(path.join(fotosDir, 'index.html'), galleryTemplate());
   
   // Gallery filtered by tag
-  const images = getGalleryImages();
+  const images = syncGalleryJson();
   const imageTags = [...new Set(images.flatMap(img => img.tags))];
   for (const tag of imageTags) {
     fs.writeFileSync(path.join(fotosDir, `${tag}.html`), galleryTemplate(tag));

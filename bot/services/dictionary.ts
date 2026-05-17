@@ -13,6 +13,13 @@ function normalizeText(text: string): string {
     .trim();
 }
 
+const PASSTHROUGH_TEMPLATES = new Set([
+  'plm', 'csem', 'l', 't', 'uso',
+  'ámbito', 'ambito',
+  'sinónimo', 'sinonimo',
+  'hiperónimo', 'hiperonimo',
+]);
+
 function replaceUsefulTemplates(text: string): string {
   return text.replace(/\{\{([^{}]+)\}\}/g, (_match, inner) => {
     const parts = String(inner)
@@ -20,32 +27,12 @@ function replaceUsefulTemplates(text: string): string {
       .map((part) => part.trim())
       .filter(Boolean);
 
-    if (parts.length === 0) {
-      return '';
-    }
+    if (parts.length === 0) return '';
 
     const name = parts[0].toLowerCase();
     const args = parts.slice(1);
 
-    const passthroughTemplates = new Set([
-      'plm',
-      'csem',
-      'l',
-      't',
-      'uso',
-      'ámbito',
-      'ambito',
-      'sinónimo',
-      'sinonimo',
-      'hiperónimo',
-      'hiperonimo',
-    ]);
-
-    if (passthroughTemplates.has(name)) {
-      return args[0] || '';
-    }
-
-    return '';
+    return PASSTHROUGH_TEMPLATES.has(name) ? args[0] || '' : '';
   });
 }
 

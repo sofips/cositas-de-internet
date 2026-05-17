@@ -32,12 +32,6 @@ export const config = {
     authorName: process.env.GIT_AUTHOR_NAME || 'Bot Definiciones',
     authorEmail: process.env.GIT_AUTHOR_EMAIL || 'bot@definition.local',
   },
-  paths: {
-    projectRoot: process.env.PROJECT_ROOT || path.resolve(__dirname, '..'),
-    definitionsPath: process.env.PROJECT_ROOT
-      ? path.join(process.env.PROJECT_ROOT, 'public', 'definitions.json')
-      : path.join(path.resolve(__dirname, '..'), 'public', 'definitions.json'),
-  },
 };
 
 if (!config.telegram.token || !config.telegram.adminId) {

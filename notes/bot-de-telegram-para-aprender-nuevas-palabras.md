@@ -1,7 +1,7 @@
 ---
 title: Bot de Telegram para aprender nuevas palabras
 tags: [public, tutorial, tech]
-estado: "🪴 plantita"
+estado: "🌳 árbol"
 created: 2026-05-03
 updated: 2026-05-03
 
@@ -9,7 +9,7 @@ updated: 2026-05-03
 
 # Bot de Telegram para aprender nuevas palabras
 
-**Estado:** 🪴 plantita
+**Estado:** 🌳 árbol
 
 Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me preguntó *Cómo puede alguien retener esta información ultra específica?*
 
