@@ -1,0 +1,5 @@
+#!/bin/sh
+ROOT="$(git rev-parse --show-toplevel)"
+STAGED_NOTES=$(git diff --cached --name-only --diff-filter=ACM | grep '^notes/.*\.md$')
+if [ -z "$STAGED_NOTES" ]; then exit 0; fi
+"$ROOT/node_modules/.bin/tsx" "$ROOT/scripts/update-note-dates.ts" $STAGED_NOTES

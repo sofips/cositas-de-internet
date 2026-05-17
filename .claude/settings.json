@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx *)",
+      "Bash(git -C /home/sofi/Documents/fun/cositas-de-internet config --local core.hooksPath)",
+      "Bash(git -C /home/sofi/Documents/fun/cositas-de-internet config --local --list)",
+      "Bash(npm run *)"
+    ]
+  }
+}
