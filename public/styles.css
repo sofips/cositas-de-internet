@@ -992,13 +992,10 @@ body {
    ═══════════════════════════════════════════ */
 
 .note-estado {
-  margin-top: 0.6rem;
-  margin-bottom: 0.2rem;
   font-family: 'Space Mono', monospace;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: bold;
   color: var(--text-secondary);
-  opacity: 0.85;
-  letter-spacing: 0.03em;
 }
 
 /* ═══════════════════════════════════════════

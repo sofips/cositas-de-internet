@@ -73,13 +73,6 @@ for (const relPath of stagedFiles) {
     // e.g. "🌱 semilla" → "semilla"
     const estadoName = currentEstado.split(' ').slice(1).join(' ');
 
-    // Sync **Estado:** line in body if it exists
-    const estadoLineRegex = /^\*\*Estado:\*\*\s*.+$/m;
-    if (estadoLineRegex.test(content)) {
-      const next = content.replace(estadoLineRegex, `**Estado:** ${currentEstado}`);
-      if (next !== content) { content = next; modified = true; }
-    }
-
     // Sync estado tag: remove old stage tag, add current one
     if (ESTADO_NAMES.has(estadoName)) {
       const tagsMatch = content.match(/^(tags:\s*\[)([^\]]*)\]/m);

@@ -18,7 +18,7 @@ function getRandomData(): string {
 
 function estadoDisplay(estado?: string): string {
   if (!estado) return '';
-  return `<div class="note-estado"><strong>${estado}</strong></div>`;
+  return `<span class="note-estado">${estado}</span>`;
 }
 
 export function baseLayout(content: string, title = SITE_TITLE): string {
@@ -260,11 +260,11 @@ export function homeTemplate(notes: Note[]): string {
         <h2>${note.title}</h2>
         <div class="note-meta">
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
+          ${estadoDisplay(note.estado)}
         </div>
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
         </div>
-        ${estadoDisplay(note.estado)}
         <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
@@ -331,11 +331,11 @@ export function noteTemplate(note: Note): string {
         <div class="note-meta">
           <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString('es-ES')}</span>
           <span class="date">Creado: ${note.createdAt.toLocaleDateString('es-ES')}</span>
+          ${estadoDisplay(note.estado)}
         </div>
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
         </div>
-        ${estadoDisplay(note.estado)}
       </header>
       <div class="note-content">
         ${note.html}
@@ -378,8 +378,8 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
         <h2>${note.title}</h2>
         <div class="note-meta">
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
+          ${estadoDisplay(note.estado)}
         </div>
-        ${estadoDisplay(note.estado)}
         <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
