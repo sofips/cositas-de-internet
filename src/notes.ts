@@ -62,7 +62,7 @@ export function parseNote(filePath: string): Note | null {
       slug,
       title: metadata.title || slug,
       content,
-      html: marked(rewritten.replace(/^\*\*Estado:\*\*\s*.+\n?/m, '')) as string,
+      html: marked(rewritten) as string,
       tags,
       estado: metadata.estado,
       isPublic,

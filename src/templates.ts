@@ -265,7 +265,7 @@ export function homeTemplate(notes: Note[]): string {
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
         </div>
-        <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
+        <p class="preview">${note.content.replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
   `).join('');
@@ -380,7 +380,7 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
           <span class="date">${note.updatedAt.toLocaleDateString()}</span>
           ${estadoDisplay(note.estado)}
         </div>
-        <p class="preview">${note.content.slice(0, 150).replace(/[#*_`]/g, '')}...</p>
+        <p class="preview">${note.content.replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
     </article>
   `).join('');
