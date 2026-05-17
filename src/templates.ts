@@ -16,6 +16,13 @@ function getRandomData(): string {
   return JSON.stringify([...noteLinks, ...photoLinks, BASE_PATH + '/fotos/']);
 }
 
+function formatDate(d: Date): string {
+  const dd = String(d.getDate()).padStart(2, '0');
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const yy = String(d.getFullYear()).slice(2);
+  return `${dd}-${mm}-${yy}`;
+}
+
 function estadoDisplay(estado?: string, date?: string): string {
   if (!estado) return '';
   const datePart = date ? ` (${date})` : '';
@@ -260,7 +267,7 @@ export function homeTemplate(notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          ${estadoDisplay(note.estado, note.updatedAt.toLocaleDateString())}
+          ${estadoDisplay(note.estado, formatDate(note.updatedAt))}
         </div>
         <div class="tags">
           ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
@@ -377,7 +384,7 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
       <a href="${BASE_PATH}/notes/${note.slug}.html">
         <h2>${note.title}</h2>
         <div class="note-meta">
-          ${estadoDisplay(note.estado, note.updatedAt.toLocaleDateString())}
+          ${estadoDisplay(note.estado, formatDate(note.updatedAt))}
         </div>
         <p class="preview">${note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
       </a>
