@@ -1,6 +1,6 @@
 ---
 title: Qué son los jardines digitales
-tags: [public, bienvenida, meta, intro, jardines, hipertexto, estado-arbol, árbol]
+tags: [public, bienvenida, meta, intro, jardines, hipertexto, estado-arbol]
 estado: "🌳 árbol"
 created: 2026-01-13
 updated: 2026-05-17
@@ -64,7 +64,7 @@ Existe mucho material más dando vueltas sobre la historia y filosofía detrás 
 
 Para cerrar su artículo, Maggie enlista algunos principios generales que rigen los jardines.
 
-1) **Topografía > Líneas temporales**: Los jardines se organizan alrededor de relaciones contextuales y enlaces asociativos. Las fechas de publicación no son relevantes, se pueden incluir pero no son la vase estructural. Los posteos se conectan entre sí usando tópicos y contexto relacionado. Personalmente, busco hacer esto con un sistema de etiquetas de tópico para cada entrada. 
+1) **Topografía > Líneas temporales**: Los jardines se organizan alrededor de relaciones contextuales y enlaces asociativos. Las fechas de publicación no son relevantes, se pueden incluir pero no son la base estructural. Los posteos se conectan entre sí usando tópicos y contexto relacionado. Personalmente, busco hacer esto con un sistema de etiquetas de tópico para cada entrada. 
 
 Otra forma muy usada son los links bi-direccionales, que permiten visualizar la página fuente y la de destino para moverse entre contenido relacionado. La idea principal es que unx pueda entrar desde cualquier lado y llegar a cualquier lado. También es común encontrar herramientas que visualicen esta información como grafos.
 
@@ -85,13 +85,13 @@ En este jardín, mi sistema está siendo a través de etiquetas que denoten el e
 - 🌱 Semilla: Simplemente planteando la idea de que en algún momento quiero escribir de eso.
 - 🌿 Brote: Idea en formación, puede ser simplemente una colección de pensamientos o una introducción.
 - 🪴 Plantita: Tiene forma, pero todavía falta desarrollar varios puntos.
-- 🌳 Árbol: Ideas cerradas, aunque nunca terminadas. Como todo árbol, crecen y se puden podar con el tiempo.
+- 🌳 Árbol: Ideas cerradas, aunque nunca terminadas. Como todo árbol, crecen y se pueden podar con el tiempo.
 
 También agrego a cada entrada las fechas de publicación y de última actualización.
 
 4) **Divertidos, personales y experimentales**
 
-La no homogeneidad es una característica central de los jardínes. Una semilla del mismo tipo dará resultados distintos en cada quién que la plante. Este concepto se traslada a la originalidad e individualidad de los jardines digitales. 
+La no homogeneidad es una característica central de los jardines. Una semilla del mismo tipo dará resultados distintos en cada quién que la plante. Este concepto se traslada a la originalidad e individualidad de los jardines digitales. 
 
 Este tipo de espacios en la web nos permite expresarnos de una manera que refleje realmente lo que queremos mostrar. Para mí es fundamental experimentar con la estética en varios aspectos de mi vida. Mi jardín no puede ser la excepción.
 
@@ -99,11 +99,11 @@ Las redes sociales actuales nos hacen publicar en un molde predeterminado que no
 
 Los jardines permiten diseñar nuestra experiencia digital a medida. Por ejemplo, yo quiero un apartado en el que se muestren las palabras que aprendo y como mi plantilla es mía puedo agregarlo. Más allá de todas las desventajas y contradicciones que ha generado la popularización de modelos de lenguaje, a mí me han permitido experimentar mucho con el desarrollo y diseño web. 
 
-En resumen, hay que volver a jugar en internet y diseñar internet jugando: *Hagamos Internet Lindo otra vez*. Qué vuelvan los perfiles ultra personalizados, los widgets divertidos, y kas cosas poco funcionales pero expresivas.
+En resumen, hay que volver a jugar en internet y diseñar internet jugando: *Hagamos Internet Lindo otra vez*. Qué vuelvan los perfiles ultra personalizados, los widgets divertidos, y las cosas poco funcionales pero expresivas.
 
 5) **Diversidad de contenido**
 
-Todos los buenos jardínes tienen diversidad de cultivos. Dada la diversidad actual de contenido, está bueno pensar en agregar videos, fotos y toda clase de medios a nuestros jardines.
+Todos los buenos jardines tienen diversidad de cultivos. Dada la diversidad actual de contenido, está bueno pensar en agregar videos, fotos y toda clase de medios a nuestros jardines.
 
 
 6) **Soberanía**

@@ -11,9 +11,9 @@ updated: 2026-05-17
 
 **Estado:** 🌳 árbol
 
-Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me preguntó *Cómo puedo acordarme de estas palabras raras que aparecen en todos los crucigramas?*
+Hace algunos años, en unas vacaciones con una amiga en San Bernardo, recuperé el hábito de comprar revistitas de juegos de palabras y crucigramas. Desde entonces, me pregunto *Cómo puedo acordarme de estas palabras raras que aparecen en todos los crucigramas?*
 
-Con esto en mente, junto con el sueño de algún día ser participante de Pasapalabra, agregué a este humilde jardín el widget **Palabra del día** que debería llamarse **Palabras que aprendo haciendo crucigramas** y que puede verse en el [inicio](https://sofips.github.io/cositas-de-internet/). Hoy, quiero ir un paso más allá, y e intentar automatizar la carga de palabras.
+Con esto en mente, junto con el sueño de algún día ser participante de Pasapalabra, agregué a este humilde jardín el widget **Palabra del día** que debería llamarse **Palabras que aprendo haciendo crucigramas** y que puede verse en el [inicio](https://sofips.github.io/cositas-de-internet/). Hoy, quiero ir un paso más allá, e intentar automatizar la carga de palabras.
 
 Actualmente, la forma en la que funciona es a través de un diccionario (`.json`) en el que las palabras se cargan con su definición y en algunos casos una fuente.
 
@@ -320,6 +320,7 @@ RestartSec=10
 
 [Install]
 WantedBy=multi-user.target
+```
 
 Después de crear el archivo, hay que recargar systemd, activar el servicio y arrancarlo:
 
