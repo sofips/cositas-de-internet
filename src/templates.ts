@@ -4,6 +4,17 @@ import { getGalleryImages } from './gallery.js';
 const SITE_TITLE = '✧ Cositas de Internet ✧';
 const BASE_PATH = process.env.BASE_PATH || '';
 
+// Escapes dynamic text before it gets interpolated into HTML attributes/text nodes.
+// Never applied to note.html — that's the already-rendered Markdown output and is meant to stay HTML.
+function escapeHtml(value: string): string {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // Generate random data for all pages
 function getRandomData(): string {
   const notes = getAllNotes();
@@ -26,7 +37,7 @@ function formatDate(d: Date): string {
 function estadoDisplay(estado?: string, date?: string): string {
   if (!estado) return '';
   const datePart = date ? ` (${date})` : '';
-  return `<span class="note-estado"><strong>Estado:</strong> ${estado}${datePart}</span>`;
+  return `<span class="note-estado"><strong>Estado:</strong> ${escapeHtml(estado)}${datePart}</span>`;
 }
 
 export function baseLayout(content: string, title = SITE_TITLE): string {
@@ -37,7 +48,7 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${title}</title>
+  <title>${escapeHtml(title)}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -129,21 +140,27 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
     const nextBtn = document.querySelector('.modal-next');
     const slides = Array.from(document.querySelectorAll('.carousel-slide, .gallery-item'));
     let currentIndex = 0;
-    
+
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     function showImage(index) {
       if (index < 0) index = slides.length - 1;
       if (index >= slides.length) index = 0;
       currentIndex = index;
-      
+
       const slide = slides[currentIndex];
       const img = slide.querySelector('img');
       const desc = slide.dataset.description || '';
       const tags = slide.dataset.tags || '';
-      
+
       modalImg.src = img.src;
       modalDesc.textContent = desc;
       modalTags.innerHTML = tags.split(',').filter(t => t.trim())
-        .map(t => '<a href="' + window.BASE_PATH + '/fotos/' + encodeURIComponent(t.trim()) + '.html" class="tag">' + t.trim() + '</a>').join('');
+        .map(t => '<a href="' + window.BASE_PATH + '/fotos/' + encodeURIComponent(t.trim()) + '.html" class="tag">' + escapeHtml(t.trim()) + '</a>').join('');
     }
     
     slides.forEach((slide, idx) => {
@@ -249,8 +266,10 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   </script>
 
   <!-- Bubble Cursor Effect -->
+  <!-- Self-hosted (public/vendor/cursor-effects.esm.js) instead of loaded from unpkg.com/@latest,
+       so the live site doesn't depend on a third-party CDN or an unpinned release at request time. -->
   <script type="module">
-    import { bubbleCursor } from 'https://unpkg.com/cursor-effects@latest/dist/esm.js';
+    import { bubbleCursor } from '${BASE_PATH}/vendor/cursor-effects.esm.js';
     
     bubbleCursor({
       fillColor: "#f771b4",
@@ -265,14 +284,14 @@ export function homeTemplate(notes: Note[]): string {
   const noteCards = notes.map(note => `
     <article class="note-card glass-card">
       <a href="${BASE_PATH}/notes/${note.slug}.html">
-        <h2>${note.title}</h2>
+        <h2>${escapeHtml(note.title)}</h2>
         <div class="note-meta">
           ${estadoDisplay(note.estado, formatDate(note.updatedAt))}
         </div>
         <div class="tags">
-          ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${tag}</span>`).join('')}
+          ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
         </div>
-        <p class="preview">${note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
+        <p class="preview">${escapeHtml(note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, ''))}...</p>
       </a>
     </article>
   `).join('');
@@ -301,8 +320,8 @@ export function homeTemplate(notes: Note[]): string {
           <div class="carousel-track-container">
             <div class="carousel-track">
               ${getGalleryImages().map(img => `
-              <div class="carousel-slide" data-description="${img.description}" data-tags="${img.tags.join(', ')}">
-                <img src="${BASE_PATH}/images/${img.file}" alt="${img.description || img.file}">
+              <div class="carousel-slide" data-description="${escapeHtml(img.description)}" data-tags="${escapeHtml(img.tags.join(', '))}">
+                <img src="${BASE_PATH}/images/${img.file}" alt="${escapeHtml(img.description || img.file)}">
               </div>`).join('')}
             </div>
           </div>
@@ -334,13 +353,13 @@ export function noteTemplate(note: Note): string {
   const content = `
     <article class="note-full glass-card">
       <header class="note-header">
-        <h1>${note.title}</h1>
+        <h1>${escapeHtml(note.title)}</h1>
         <div class="note-meta">
           <span class="date">Actualizado: ${note.updatedAt.toLocaleDateString('es-ES')}</span>
           <span class="date">Creado: ${note.createdAt.toLocaleDateString('es-ES')}</span>
         </div>
         <div class="tags">
-          ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${tag}</a>`).join('')}
+          ${note.tags.filter(t => t !== 'public').map(tag => `<a href="${BASE_PATH}/tags/${tag}.html" class="tag">${escapeHtml(tag)}</a>`).join('')}
         </div>
         ${estadoDisplay(note.estado)}
       </header>
@@ -361,7 +380,7 @@ export function tagsTemplate(tags: Map<string, number>): string {
     .sort((a, b) => b[1] - a[1])
     .map(([tag, count]) => `
       <a href="${BASE_PATH}/tags/${tag}.html" class="tag-item glass-card">
-        <span class="tag-name">${tag}</span>
+        <span class="tag-name">${escapeHtml(tag)}</span>
         <span class="tag-count">${count}</span>
       </a>
     `).join('');
@@ -382,18 +401,18 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
   const noteCards = notes.map(note => `
     <article class="note-card glass-card">
       <a href="${BASE_PATH}/notes/${note.slug}.html">
-        <h2>${note.title}</h2>
+        <h2>${escapeHtml(note.title)}</h2>
         <div class="note-meta">
           ${estadoDisplay(note.estado, formatDate(note.updatedAt))}
         </div>
-        <p class="preview">${note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, '')}...</p>
+        <p class="preview">${escapeHtml(note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, ''))}...</p>
       </a>
     </article>
   `).join('');
 
   const content = `
     <section class="tag-notes-page">
-      <h1>Etiqueta: ${tag}</h1>
+      <h1>Etiqueta: ${escapeHtml(tag)}</h1>
       <a href="${BASE_PATH}/tags/" class="back-link">← Todas las etiquetas</a>
       <div class="notes-grid">
         ${noteCards || '<p class="empty-state">¡No hay notas con esta etiqueta todavía!</p>'}
@@ -426,18 +445,18 @@ export function galleryTemplate(filterTag?: string): string {
   const allTags = [...new Set(images.flatMap(img => img.tags))].sort();
   
   const tagFilters = allTags.map(tag => `
-    <a href="${BASE_PATH}/fotos/${encodeURIComponent(tag)}.html" class="tag ${filterTag === tag ? 'active' : ''}">${tag}</a>
+    <a href="${BASE_PATH}/fotos/${encodeURIComponent(tag)}.html" class="tag ${filterTag === tag ? 'active' : ''}">${escapeHtml(tag)}</a>
   `).join('');
-  
+
   const galleryItems = filteredImages.map(img => `
-    <div class="gallery-item" data-description="${img.description}" data-tags="${img.tags.join(', ')}">
-      <img src="${BASE_PATH}/images/${img.file}" alt="${img.description || img.file}" loading="lazy">
+    <div class="gallery-item" data-description="${escapeHtml(img.description)}" data-tags="${escapeHtml(img.tags.join(', '))}">
+      <img src="${BASE_PATH}/images/${img.file}" alt="${escapeHtml(img.description || img.file)}" loading="lazy">
     </div>
   `).join('');
 
   const content = `
     <section class="gallery-page">
-      <h1><span class="pixel-arrow">▸</span> Fotos ${filterTag ? `<span class="filter-tag">/ ${filterTag}</span>` : ''}</h1>
+      <h1><span class="pixel-arrow">▸</span> Fotos ${filterTag ? `<span class="filter-tag">/ ${escapeHtml(filterTag)}</span>` : ''}</h1>
       <div class="gallery-filters">
         <a href="${BASE_PATH}/fotos/" class="tag ${!filterTag ? 'active' : ''}">Todas</a>
         ${tagFilters}
