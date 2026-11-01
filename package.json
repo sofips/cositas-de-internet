@@ -7,6 +7,8 @@
     "dev": "tsx watch src/server.ts",
     "build": "tsx src/build.ts",
     "new-note": "tsx src/new-note.ts",
+    "build:neocities": "BASE_PATH= tsx src/build.ts",
+    "deploy:neocities": "npm run build:neocities && tsx scripts/deploy-neocities.ts",
     "prepare": "git config core.hooksPath .githooks && chmod +x .githooks/pre-commit"
   },
   "keywords": [
