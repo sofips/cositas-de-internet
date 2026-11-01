@@ -2,8 +2,9 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
-import { getAllNotes, getNoteBySlug, getAllTags, getNotesByTag, ensureDirectories } from './notes.js';
+import { getAllNotes, getNoteBySlug, getAllTags, getNotesByTag, ensureDirectories, invalidateNotesCache } from './notes.js';
 import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, notFoundTemplate, galleryTemplate } from './templates.js';
+import { invalidateGalleryCache } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -79,16 +80,31 @@ const watcher = chokidar.watch(notesDir, {
 });
 
 watcher.on('change', (filePath) => {
+  invalidateNotesCache();
   console.log(`📝 Note updated: ${path.basename(filePath)}`);
 });
 
 watcher.on('add', (filePath) => {
+  invalidateNotesCache();
   console.log(`🌱 New note: ${path.basename(filePath)}`);
 });
 
 watcher.on('unlink', (filePath) => {
+  invalidateNotesCache();
   console.log(`🗑️  Note deleted: ${path.basename(filePath)}`);
 });
+
+// Watch the gallery folder too, so getGalleryImages()'s cache (gallery.ts) doesn't go stale
+// in dev when photos or gallery.json are added/edited/removed.
+const imagesDir = path.join(__dirname, '../public/images');
+const imagesWatcher = chokidar.watch(imagesDir, {
+  ignored: /(^|[\/\\])\../,
+  persistent: true
+});
+
+imagesWatcher.on('change', invalidateGalleryCache);
+imagesWatcher.on('add', invalidateGalleryCache);
+imagesWatcher.on('unlink', invalidateGalleryCache);
 
 app.listen(PORT, () => {
   console.log(`

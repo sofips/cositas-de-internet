@@ -75,28 +75,35 @@ export function parseNote(filePath: string): Note | null {
   }
 }
 
+// Matches a note slug: letters (incl. tildes/ñ/any Unicode letter), digits, underscore, hyphen,
+// slash and space. Needs the `u` flag to make \p{L}/\p{N} Unicode-aware — plain \w is ASCII-only
+// and used to silently fail to match slugs with accents (e.g. "canción"), leaving the wikilink
+// as literal, unrewritten text. Current note filenames avoid accents so this hasn't bitten yet,
+// but there's no reason the link syntax itself should require that.
+const SLUG_CHARS = '[\\p{L}\\p{N}_\\-\\/ ]+';
+
 // Convert [[wikilinks]] and relative markdown links to /notes/slug.html
 function rewriteInternalLinks(src: string): string {
   let out = src;
   // [[slug]] or [[text|slug]] patterns -> link to notes (URL-encoded)
-  out = out.replace(/\[\[\s*([\w\-\/ ]+)\s*\]\]/g, (_m, slug) => {
+  out = out.replace(new RegExp(`\\[\\[\\s*(${SLUG_CHARS})\\s*\\]\\]`, 'gu'), (_m, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     const text = slug.split('/').pop().replace(/-/g, ' ');
     return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
-  out = out.replace(/\[\[\s*([^\]|]+)\|\s*([\w\-\/ ]+)\s*\]\]/g, (_m, text, slug) => {
+  out = out.replace(new RegExp(`\\[\\[\\s*([^\\]|]+)\\|\\s*(${SLUG_CHARS})\\s*\\]\\]`, 'gu'), (_m, text, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
 
   // [text](slug) where slug is bare (no scheme, no leading /, no #, no extension)
-  out = out.replace(/\[([^\]]+)\]\((?!https?:|mailto:|#|\/)([\w\-\/ ]+)\)/g, (_m, text, slug) => {
+  out = out.replace(new RegExp(`\\[([^\\]]+)\\]\\((?!https?:|mailto:|#|\\/)(${SLUG_CHARS})\\)`, 'gu'), (_m, text, slug) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
 
   // [text](/notes/slug) -> ensure .html and URL-encode
-  out = out.replace(/\[([^\]]+)\]\(\/notes\/([\w\-\/ ]+)(?!\.html)(\))/g, (_m, text, slug, _close) => {
+  out = out.replace(new RegExp(`\\[([^\\]]+)\\]\\(\\/notes\\/(${SLUG_CHARS})(?!\\.html)(\\))`, 'gu'), (_m, text, slug, _close) => {
     const cleanSlug = encodeURIComponent(slug.trim().replace(/\s+/g, '-'));
     return `[${text}](${BASE_PATH}/notes/${cleanSlug}.html)`;
   });
@@ -104,20 +111,36 @@ function rewriteInternalLinks(src: string): string {
   return out;
 }
 
+// getAllNotes() re-reads and re-parses (including full Markdown rendering) every note on disk.
+// baseLayout() in templates.ts calls it once per generated page just to build the random-links
+// list, so without a cache a build with N notes redoes that work N+ times. The cache is keyed by
+// includePrivate since that flag changes the result set; invalidateNotesCache() lets the dev
+// server (server.ts) drop it when a file actually changes.
+const notesCache = new Map<boolean, Note[]>();
+
+export function invalidateNotesCache(): void {
+  notesCache.clear();
+}
+
 export function getAllNotes(includePrivate = false): Note[] {
+  const cached = notesCache.get(includePrivate);
+  if (cached) return cached;
+
   ensureDirectories();
-  
+
   const files = fs.readdirSync(NOTES_DIR).filter(f => f.endsWith('.md'));
   const notes: Note[] = [];
-  
+
   for (const file of files) {
     const note = parseNote(path.join(NOTES_DIR, file));
     if (note && (includePrivate || note.isPublic)) {
       notes.push(note);
     }
   }
-  
-  return notes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+
+  notes.sort((a, b) => b.updatedAt.getTime() - a.updatedAt.getTime());
+  notesCache.set(includePrivate, notes);
+  return notes;
 }
 
 export function getNoteBySlug(slug: string, includePrivate = false): Note | null {
