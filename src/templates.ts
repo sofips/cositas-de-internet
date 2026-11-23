@@ -1,4 +1,4 @@
-import { Note, getAllNotes } from './notes.js';
+import { Note, Seed, getAllNotes, getSeeds } from './notes.js';
 import { getGalleryImages } from './gallery.js';
 
 const SITE_TITLE = '✧ Cositas de Internet ✧';
@@ -131,6 +131,7 @@ export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions 
     <div class="nav-links">
       <a href="${BASE_PATH}/">Inicio</a>
       <a href="${BASE_PATH}/fotos/">Fotos</a>
+      <a href="${BASE_PATH}/semillas.html">Semillas</a>
       <a href="${BASE_PATH}/tags/">Etiquetas</a>
       <button onclick="goRandom()" class="random-btn">🔀</button>
     </div>
@@ -251,6 +252,38 @@ export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions 
       loadWord();
     })();
     
+    // Seeds: growth stage by age + home widget
+    function seedStage(created) {
+      const days = (Date.now() - new Date(created + 'T00:00:00').getTime()) / 86400000;
+      if (isNaN(days) || days < 14) return '🌰';
+      if (days < 60) return '🌱';
+      return '🌿';
+    }
+    document.querySelectorAll('.seed-stage[data-created]').forEach((el) => {
+      el.textContent = seedStage(el.getAttribute('data-created'));
+    });
+    // Home tabs: Notas / Semillas
+    (function() {
+      const tabs = document.querySelectorAll('.tab-btn[data-tab]');
+      if (!tabs.length) return;
+      function activate(name) {
+        tabs.forEach((t) => {
+          const on = t.getAttribute('data-tab') === name;
+          t.classList.toggle('active', on);
+          t.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('.tab-panel').forEach((p) => {
+          p.hidden = p.getAttribute('data-panel') !== name;
+        });
+      }
+      tabs.forEach((t) => t.addEventListener('click', () => {
+        const name = t.getAttribute('data-tab');
+        activate(name);
+        history.replaceState(null, '', name === 'semillas' ? '#semillas' : location.pathname + location.search);
+      }));
+      if (location.hash === '#semillas') activate('semillas');
+    })();
+
     // Random button - uses pre-generated links
     const randomLinks = ${randomLinks};
     function goRandom() {
@@ -301,7 +334,22 @@ export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions 
 </html>`;
 }
 
+function seedCards(seeds: Seed[]): string {
+  return seeds.map(seed => `
+    <article class="seed-item">
+      <div class="seed-item-head">
+        <span class="seed-stage" data-created="${escapeAttr(seed.created)}">🌱</span>
+        <h2>${escapeAttr(seed.title)}</h2>
+      </div>
+      <p class="seed-item-text">${escapeAttr(seed.text)}</p>
+      <div class="seed-meta">plantada el ${escapeAttr(seed.created)}</div>
+      ${seed.url ? `<a class="definition-source" href="${escapeAttr(seed.url)}">leer nota →</a>` : ''}
+    </article>
+  `).join('');
+}
+
 export function homeTemplate(notes: Note[]): string {
+  const seeds = getSeeds();
   const noteCards = notes.map(note => `
     <article class="note-card glass-card">
       <a href="${BASE_PATH}/notes/${note.slug}.html">
@@ -328,9 +376,15 @@ export function homeTemplate(notes: Note[]): string {
     </section>
 
     <!-- Notes Section -->
-    <h2 class="section-title notes-title"><span class="pixel-arrow">▸</span> Notas <span class="blink">_</span></h2>
-    <section class="notes-grid">
+    <div class="tabs" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="notas"><span class="pixel-arrow">▸</span> Notas</button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="semillas">🌱 Semillas</button>
+    </div>
+    <section class="notes-grid tab-panel" data-panel="notas" role="tabpanel">
       ${noteCards || '<p class="empty-state">No hay notas todavía... ¡hora de plantar semillas!</p>'}
+    </section>
+    <section class="seeds-grid tab-panel" data-panel="semillas" role="tabpanel" hidden>
+      ${seedCards(seeds) || '<p class="empty-state">Todavía no hay semillas... pronto va a brotar algo.</p>'}
     </section>
     
     <!-- Media Row: Gallery + Sidebar -->
@@ -502,5 +556,25 @@ export function galleryTemplate(filterTag?: string): string {
   return baseLayout(content, `Fotos${filterTag ? ` - ${filterTag}` : ''} | Cositas de Internet`, {
     description: filterTag ? `Galería de fotos etiquetadas con "${filterTag}".` : 'Galería de fotos de Cositas de Internet.',
     path: filterTag ? `/fotos/${encodeURIComponent(filterTag)}.html` : '/fotos/',
+  });
+}
+
+export function seedsTemplate(seeds: Seed[]): string {
+  const items = seedCards(seeds);
+
+  const content = `
+    <section class="gallery-page seeds-page">
+      <h1><span class="pixel-arrow">▸</span> Semillas <span class="blink">_</span></h1>
+      <p class="seeds-intro">Ideas cortas sobre las que quiero escribir. 🌰 nueva · 🌱 brotando · 🌿 creciendo hace rato.</p>
+      <div class="seeds-grid">
+        ${items || '<p class="empty-state">¡Todavía no hay semillas!</p>'}
+      </div>
+      <a href="${BASE_PATH}/" class="back-link">← Volver al inicio</a>
+    </section>
+  `;
+
+  return baseLayout(content, 'Semillas | Cositas de Internet', {
+    description: 'Ideas cortas sobre las que quiero escribir, en distintas etapas de crecimiento.',
+    path: '/semillas.html',
   });
 }

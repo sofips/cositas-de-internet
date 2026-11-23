@@ -2,8 +2,8 @@ import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
-import { getAllNotes, getNoteBySlug, getAllTags, getNotesByTag, ensureDirectories } from './notes.js';
-import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, notFoundTemplate, galleryTemplate } from './templates.js';
+import { getAllNotes, getSeeds, getNoteBySlug, getAllTags, getNotesByTag, ensureDirectories } from './notes.js';
+import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, notFoundTemplate, galleryTemplate, seedsTemplate } from './templates.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +37,15 @@ app.get('/fotos/index.html', (req, res) => {
 app.get('/fotos/:tag.html', (req, res) => {
   const tag = decodeURIComponent(req.params.tag);
   res.send(galleryTemplate(tag));
+});
+
+// Seeds (visible ones only)
+app.get('/semillas.json', (req, res) => {
+  res.json(getSeeds());
+});
+
+app.get(['/semillas', '/semillas.html'], (req, res) => {
+  res.send(seedsTemplate(getSeeds()));
 });
 
 // Individual note

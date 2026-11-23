@@ -1366,3 +1366,105 @@ a:focus-visible, button:focus-visible {
   background: var(--fuchsia); 
   color: var(--text-primary); 
 }
+
+/* ═══════════════════════════════════════════
+   SEMILLAS
+   ═══════════════════════════════════════════ */
+
+.seed-item-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.seed-meta {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+
+.seeds-intro {
+  font-family: 'Space Mono', monospace;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+.seeds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.seed-item {
+  background: var(--card-bg);
+  border: 3px solid var(--green);
+  box-shadow: 5px 5px 0 var(--purple);
+  padding: 1rem 1.1rem;
+  transition: var(--transition);
+}
+
+.seed-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 5px 8px 0 var(--fuchsia);
+}
+
+.seed-item-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.seed-item-head h2 {
+  font-family: 'Silkscreen', monospace;
+  font-size: 1rem;
+  color: var(--cyan-bright);
+  margin: 0;
+}
+
+.seed-stage {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.seed-item-text {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 2.5rem 0 1.25rem;
+}
+
+.tab-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.75rem;
+  background: var(--secondary-bg);
+  color: var(--text-secondary);
+  border: 3px solid var(--purple);
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--cyan-bright);
+}
+
+.tab-btn.active {
+  background: var(--fuchsia);
+  color: var(--text-primary);
+  border-color: var(--fuchsia);
+  box-shadow: 4px 4px 0 var(--purple);
+}
+
+.tab-panel[hidden] {
+  display: none;
+}

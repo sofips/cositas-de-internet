@@ -14,6 +14,7 @@ export interface Note {
   html: string;
   tags: string[];
   estado?: string;
+  visible?: boolean;
   isPublic: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -25,6 +26,7 @@ export interface NoteMetadata {
   created?: string;
   updated?: string;
   estado?: string;
+  visible?: boolean;
 }
 
 const NOTES_DIR = path.join(__dirname, '../notes');
@@ -65,6 +67,7 @@ export function parseNote(filePath: string): Note | null {
       html: marked(rewritten.replace(/^\*\*Estado:\*\*\s*.+\n?/m, '')) as string,
       tags,
       estado: metadata.estado,
+      visible: metadata.visible === true,
       isPublic,
       createdAt: metadata.created ? new Date(metadata.created) : stats.birthtime,
       updatedAt: metadata.updated ? new Date(metadata.updated) : stats.mtime,
@@ -153,4 +156,33 @@ export function getAllTags(includePrivate = false): Map<string, number> {
 
 export function getNotesByTag(tag: string, includePrivate = false): Note[] {
   return getAllNotes(includePrivate).filter(note => note.tags.includes(tag));
+}
+
+export interface Seed {
+  slug: string;
+  title: string;
+  text: string;
+  created: string; // YYYY-MM-DD
+  url?: string; // solo si la semilla ya es una nota pública
+}
+
+function toDateString(d: Date): string {
+  return d.toISOString().split('T')[0];
+}
+
+/** Semillas marcadas como visibles (`visible: true` + estado semilla). Son las únicas que se publican. */
+export function getSeeds(): Seed[] {
+  return getAllNotes(true)
+    .filter(n => n.visible && (n.estado || '').toLowerCase().includes('semilla'))
+    .map(n => ({
+      slug: n.slug,
+      title: n.title,
+      text: n.content
+        .replace(/^#\s+.*\n?/m, '')
+        .replace(/^\*\*Estado:\*\*\s*.+\n?/m, '')
+        .trim(),
+      created: toDateString(n.createdAt),
+      ...(n.isPublic ? { url: `${BASE_PATH}/notes/${n.slug}.html` } : {}),
+    }))
+    .sort((a, b) => b.created.localeCompare(a.created));
 }

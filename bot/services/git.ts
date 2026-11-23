@@ -52,3 +52,125 @@ export async function addDefinitionViaGitHubAPI(newDef: Definition): Promise<{ o
     return { ok: false, reason: 'error' };
   }
 }
+
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .slice(0, 60)
+    .replace(/-$/, '');
+}
+
+/** Crea una nota (sin tag `public`) con estado semilla. Si `visible`, aparece en el widget/grilla del sitio. */
+export async function addSeedViaGitHubAPI(idea: string, visible = false): Promise<{ ok: boolean; slug?: string; reason?: string }> {
+  try {
+    const firstLine = idea.split('\n')[0].trim();
+    const words = firstLine.split(/\s+/).slice(0, 8).join(' ');
+    const title = words.length < firstLine.length ? `${words}…` : words;
+    const base = slugify(words) || `semilla-${Date.now()}`;
+    const date = new Date().toISOString().split('T')[0];
+
+    const content = `---
+title: "${title.replace(/"/g, '\\"')}"
+tags: [semilla]
+estado: "🌱 semilla"
+${visible ? 'visible: true\n' : ''}created: ${date}
+updated: ${date}
+---
+
+# ${title}
+
+**Estado:** 🌱 semilla
+
+${idea}
+`;
+
+    // Evitar pisar una nota existente: probar base, base-2, base-3...
+    for (let i = 1; i <= 20; i++) {
+      const slug = i === 1 ? base : `${base}-${i}`;
+      const url = `${API}/repos/${OWNER}/${REPO}/contents/notes/${slug}.md`;
+      try {
+        await axios.put(url, {
+          message: `🌱 Bot: nueva semilla '${title}'`,
+          content: Buffer.from(content, 'utf8').toString('base64'),
+          committer: { name: config.git.authorName, email: config.git.authorEmail },
+        }, { headers: HEADERS });
+        return { ok: true, slug };
+      } catch (err: any) {
+        // 422 = el archivo ya existe (falta sha) -> probar otro slug
+        if (err?.response?.status === 422) continue;
+        throw err;
+      }
+    }
+    return { ok: false, reason: 'exists' };
+  } catch (err: any) {
+    console.error('Git API error (seed):', err?.response?.data || err.message || err);
+    return { ok: false, reason: 'error' };
+  }
+}
+
+const IMAGES_PATH = 'public/images';
+const GALLERY_JSON_PATH = `${IMAGES_PATH}/gallery.json`;
+
+/**
+ * Sube una foto a public/images/ y registra su descripción y tags en gallery.json.
+ * Son dos commits: primero la imagen, después el JSON.
+ * Si la imagen se sube pero el JSON falla, devuelve reason 'metadata' (la foto igual queda en la galería, sin descripción).
+ */
+export async function addPhotoViaGitHubAPI(
+  image: Buffer,
+  ext: string,
+  description: string,
+  tags: string[]
+): Promise<{ ok: boolean; file?: string; reason?: string }> {
+  const base = slugify(description).replace(/-/g, '_') || `foto_${Date.now()}`;
+  let file: string | undefined;
+
+  try {
+    for (let i = 1; i <= 20; i++) {
+      const candidate = `${base}${i === 1 ? '' : `_${i}`}.${ext}`;
+      try {
+        await axios.put(`${API}/repos/${OWNER}/${REPO}/contents/${IMAGES_PATH}/${candidate}`, {
+          message: `📸 Bot: nueva foto '${candidate}'`,
+          content: image.toString('base64'),
+          committer: { name: config.git.authorName, email: config.git.authorEmail },
+        }, { headers: HEADERS });
+        file = candidate;
+        break;
+      } catch (err: any) {
+        if (err?.response?.status === 422) continue; // ya existe -> otro nombre
+        throw err;
+      }
+    }
+    if (!file) return { ok: false, reason: 'exists' };
+  } catch (err: any) {
+    console.error('Git API error (photo upload):', err?.response?.data || err.message || err);
+    return { ok: false, reason: 'error' };
+  }
+
+  try {
+    const url = `${API}/repos/${OWNER}/${REPO}/contents/${GALLERY_JSON_PATH}`;
+    const res = await axios.get(url, { headers: HEADERS });
+    const list: { file: string; description: string; tags: string[] }[] =
+      JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8') || '[]');
+
+    list.push({ file, description, tags });
+
+    await axios.put(url, {
+      message: `📸 Bot: metadata de '${file}'`,
+      content: Buffer.from(JSON.stringify(list, null, 2), 'utf8').toString('base64'),
+      sha: res.data.sha,
+      committer: { name: config.git.authorName, email: config.git.authorEmail },
+    }, { headers: HEADERS });
+
+    return { ok: true, file };
+  } catch (err: any) {
+    console.error('Git API error (gallery.json):', err?.response?.data || err.message || err);
+    return { ok: false, file, reason: 'metadata' };
+  }
+}

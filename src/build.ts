@@ -1,8 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { getAllNotes, ensureDirectories, PUBLIC_TAG, PRIVATE_TAG } from './notes.js';
-import { SITE_URL, homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, notFoundTemplate } from './templates.js';
+import { getAllNotes, getSeeds, ensureDirectories, PUBLIC_TAG, PRIVATE_TAG } from './notes.js';
+import { SITE_URL, homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, seedsTemplate, notFoundTemplate } from './templates.js';
 import { syncGalleryJson } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -103,12 +103,20 @@ function build(): void {
     console.log(`   ✓ ${tag}`);
   }
 
+  // Generate seeds (JSON for the home widget + grid page)
+  console.log('🌱 Generating seeds...');
+  const seeds = getSeeds();
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'semillas.json'), JSON.stringify(seeds, null, 2) + '\n');
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'semillas.html'), seedsTemplate(seeds));
+  console.log(`   ✓ ${seeds.length} semillas visibles`);
+
   // Generate sitemap.xml and robots.txt
   console.log('🗺️  Generating sitemap...');
   const urls = [
     '/',
     '/tags/',
     '/fotos/',
+    '/semillas.html',
     ...notes.map(n => `/notes/${n.slug}.html`),
     ...[...tags.keys()].map(t => `/tags/${encodeURIComponent(t)}.html`),
     ...imageTags.map(t => `/fotos/${encodeURIComponent(t)}.html`),
