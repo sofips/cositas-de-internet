@@ -426,7 +426,7 @@ export function homeTemplate(notes: Note[]): string {
             <div class="carousel-track">
               ${getGalleryImages().map(img => `
               <div class="carousel-slide" data-description="${escapeHtml(img.description)}" data-tags="${escapeHtml(img.tags.join(', '))}">
-                <img src="${BASE_PATH}/images/${img.file}" alt="${escapeHtml(img.description || img.file)}">
+                <img src="${BASE_PATH}/images/${img.file}" alt="${escapeHtml(img.description || img.file)}" loading="lazy" decoding="async">
               </div>`).join('')}
             </div>
           </div>

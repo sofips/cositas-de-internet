@@ -1,4 +1,5 @@
 import express from 'express';
+import compression from 'compression';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
@@ -15,8 +16,9 @@ const PORT = process.env.PORT || 3000;
 // Ensure directories exist
 ensureDirectories();
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '../public')));
+// Serve static files (gzip + browser cache)
+app.use(compression());
+app.use(express.static(path.join(__dirname, '../public'), { maxAge: '1d' }));
 
 // Home page
 app.get('/', (req, res) => {
