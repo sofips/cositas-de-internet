@@ -41,11 +41,13 @@ mkdir -p "$BASE" "$CONF"
 
 echo "==> Código"
 if [ -d "$APP/.git" ]; then
-  git -C "$APP" pull --ff-only
+  # Como root, git rechaza una carpeta que es de otro usuario ("dubious ownership"): hacerlo como $SVC_USER.
+  chown -R "$SVC_USER:$SVC_USER" "$BASE"
+  sudo -u "$SVC_USER" git -C "$APP" pull --ff-only
 else
   git clone "$REPO_URL" "$APP"
+  chown -R "$SVC_USER:$SVC_USER" "$BASE"
 fi
-chown -R "$SVC_USER:$SVC_USER" "$BASE"
 
 echo "==> Dependencias (incluye tsx, que está en devDependencies)"
 sudo -u "$SVC_USER" bash -c "cd '$APP' && npm ci --no-audit --no-fund"
