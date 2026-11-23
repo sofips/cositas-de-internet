@@ -10,6 +10,16 @@
     ]
   },
   {
+    "file": "un_mural_en_buenos_aires.jpg",
+    "description": "un mural en buenos aires",
+    "tags": [
+      "paredes",
+      "buenos aires",
+      "vacaciones",
+      "foto"
+    ]
+  },
+  {
     "file": "un_honguito.jpg",
     "description": "Hongo que vi en Isla Grande, Brasil.",
     "tags": [
@@ -128,16 +138,6 @@
     "description": "Palacio Paz en Buenos Aires.",
     "tags": [
       "Buenos Aires",
-      "vacaciones",
-      "foto"
-    ]
-  },
-  {
-    "file": "un_mural_en_buenos_aires.jpg",
-    "description": "un mural en buenos aires",
-    "tags": [
-      "paredes",
-      "buenos aires",
       "vacaciones",
       "foto"
     ]
