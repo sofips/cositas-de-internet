@@ -1,0 +1,22 @@
+[Unit]
+Description=Bot de Telegram (definiciones, semillas y fotos)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=botdefs
+WorkingDirectory=/opt/cositas-bot/app
+EnvironmentFile=/opt/cositas-bot/config/bot.env
+ExecStart=/usr/bin/node /opt/cositas-bot/app/node_modules/.bin/tsx /opt/cositas-bot/app/bot/main.ts
+Restart=always
+RestartSec=10
+
+# Endurecimiento básico: el bot solo habla con Telegram y GitHub por la red
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
