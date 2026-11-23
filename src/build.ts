@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getAllNotes, ensureDirectories, PUBLIC_TAG, PRIVATE_TAG } from './notes.js';
-import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, notFoundTemplate } from './templates.js';
+import { SITE_URL, homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, notFoundTemplate } from './templates.js';
 import { syncGalleryJson } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -102,6 +102,24 @@ function build(): void {
     fs.writeFileSync(path.join(fotosDir, `${tag}.html`), galleryTemplate(tag));
     console.log(`   ✓ ${tag}`);
   }
+
+  // Generate sitemap.xml and robots.txt
+  console.log('🗺️  Generating sitemap...');
+  const urls = [
+    '/',
+    '/tags/',
+    '/fotos/',
+    ...notes.map(n => `/notes/${n.slug}.html`),
+    ...[...tags.keys()].map(t => `/tags/${encodeURIComponent(t)}.html`),
+    ...imageTags.map(t => `/fotos/${encodeURIComponent(t)}.html`),
+  ];
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map(u => `  <url><loc>${SITE_URL}${u}</loc></url>`).join('\n')}
+</urlset>
+`;
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'sitemap.xml'), sitemap);
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${SITE_URL}/sitemap.xml\n`);
 
   // Generate 404 page
   fs.writeFileSync(path.join(OUTPUT_DIR, '404.html'), notFoundTemplate());

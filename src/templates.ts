@@ -3,6 +3,30 @@ import { getGalleryImages } from './gallery.js';
 
 const SITE_TITLE = '✧ Cositas de Internet ✧';
 const BASE_PATH = process.env.BASE_PATH || '';
+export const SITE_URL = (process.env.SITE_URL || 'https://sofips.github.io/cositas-de-internet').replace(/\/$/, '');
+const DEFAULT_DESCRIPTION = 'Mi jardín digital personal: notas, fotos y cositas de internet con estética Frutiger Aero.';
+
+export interface SeoOptions {
+  description?: string;
+  path?: string; // path relative to the site root, e.g. '/notes/foo.html'
+  noindex?: boolean;
+  type?: 'website' | 'article';
+}
+
+function escapeAttr(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function excerpt(markdown: string, max = 160): string {
+  const text = markdown
+    .replace(/^#.+\n?/gm, '')
+    .replace(/^\*\*Estado:\*\*\s*.+\n?/m, '')
+    .replace(/!?\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[#*_`>]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.length > max ? text.slice(0, max - 1).trimEnd() + '…' : text;
+}
 
 // Generate random data for all pages
 function getRandomData(): string {
@@ -29,7 +53,22 @@ function estadoDisplay(estado?: string, date?: string): string {
   return `<span class="note-estado"><strong>Estado:</strong> ${estado}${datePart}</span>`;
 }
 
-export function baseLayout(content: string, title = SITE_TITLE): string {
+export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions = {}): string {
+  const description = escapeAttr(seo.description || DEFAULT_DESCRIPTION);
+  const safeTitle = escapeAttr(title);
+  const url = seo.path !== undefined ? SITE_URL + seo.path : '';
+  const seoTags = [
+    `<meta name="description" content="${description}">`,
+    seo.noindex ? '<meta name="robots" content="noindex">' : '',
+    url ? `<link rel="canonical" href="${url}">` : '',
+    `<meta property="og:site_name" content="Cositas de Internet">`,
+    `<meta property="og:type" content="${seo.type || 'website'}">`,
+    `<meta property="og:title" content="${safeTitle}">`,
+    `<meta property="og:description" content="${description}">`,
+    url ? `<meta property="og:url" content="${url}">` : '',
+    `<meta property="og:locale" content="es_ES">`,
+    `<meta name="twitter:card" content="summary">`,
+  ].filter(Boolean).join('\n  ');
   const randomLinks = getRandomData();
   const ASSET_VERSION = String(Math.floor(Date.now() / 1000));
   return `<!DOCTYPE html>
@@ -38,6 +77,7 @@ export function baseLayout(content: string, title = SITE_TITLE): string {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${title}</title>
+  ${seoTags}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=VT323&family=Space+Mono:wght@400;700&family=Press+Start+2P&family=Silkscreen:wght@400;700&display=swap" rel="stylesheet">
@@ -327,7 +367,7 @@ export function homeTemplate(notes: Note[]): string {
     </section>
   `;
 
-  return baseLayout(content);
+  return baseLayout(content, SITE_TITLE, { path: '/' });
 }
 
 export function noteTemplate(note: Note): string {
@@ -353,7 +393,11 @@ export function noteTemplate(note: Note): string {
     </article>
   `;
 
-  return baseLayout(content, `${note.title} | Cositas de Internet`);
+  return baseLayout(content, `${note.title} | Cositas de Internet`, {
+    description: excerpt(note.content) || undefined,
+    path: `/notes/${note.slug}.html`,
+    type: 'article',
+  });
 }
 
 export function tagsTemplate(tags: Map<string, number>): string {
@@ -375,7 +419,10 @@ export function tagsTemplate(tags: Map<string, number>): string {
     </section>
   `;
 
-  return baseLayout(content, 'Etiquetas | Cositas de Internet');
+  return baseLayout(content, 'Etiquetas | Cositas de Internet', {
+    description: 'Todas las etiquetas de las notas de Cositas de Internet.',
+    path: '/tags/',
+  });
 }
 
 export function tagNotesTemplate(tag: string, notes: Note[]): string {
@@ -401,7 +448,10 @@ export function tagNotesTemplate(tag: string, notes: Note[]): string {
     </section>
   `;
 
-  return baseLayout(content, `${tag} | Cositas de Internet`);
+  return baseLayout(content, `${tag} | Cositas de Internet`, {
+    description: `Notas etiquetadas con "${tag}" en Cositas de Internet.`,
+    path: `/tags/${tag}.html`,
+  });
 }
 
 export function notFoundTemplate(): string {
@@ -413,7 +463,7 @@ export function notFoundTemplate(): string {
     </section>
   `;
 
-  return baseLayout(content, '404 | Cositas de Internet');
+  return baseLayout(content, '404 | Cositas de Internet', { noindex: true });
 }
 
 export function galleryTemplate(filterTag?: string): string {
@@ -449,5 +499,8 @@ export function galleryTemplate(filterTag?: string): string {
     </section>
   `;
 
-  return baseLayout(content, `Fotos${filterTag ? ` - ${filterTag}` : ''} | Cositas de Internet`);
+  return baseLayout(content, `Fotos${filterTag ? ` - ${filterTag}` : ''} | Cositas de Internet`, {
+    description: filterTag ? `Galería de fotos etiquetadas con "${filterTag}".` : 'Galería de fotos de Cositas de Internet.',
+    path: filterTag ? `/fotos/${encodeURIComponent(filterTag)}.html` : '/fotos/',
+  });
 }
