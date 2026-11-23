@@ -75,14 +75,14 @@
     "description": "App simple para hostear tu propio jardin virtual."
   },
   {
-    "url":"https://www.cositodelclima.com/cordoba-cba-ar",
-    "title":"Cositodelclima ",
-    "description":"Un cosito del clima que cambia de color segun la temperatura actual."
+    "url": "https://www.cositodelclima.com/cordoba-cba-ar",
+    "title": "Cositodelclima ",
+    "description": "Un cosito del clima que cambia de color segun la temperatura actual."
   },
   {
-    "url":"https://redactle.net/",
-    "title":"Redactle",
-    "description":"Juego de adivinar articulos de Wikipedia con palabras ocultas."
+    "url": "https://redactle.net/",
+    "title": "Redactle",
+    "description": "Juego de adivinar articulos de Wikipedia con palabras ocultas."
   },
   {
     "url": "https://www.fieggen.com/shoelace/",
@@ -106,8 +106,8 @@
   },
   {
     "url": "https://driveandlisten.app/",
-    "title":"Drive and Listen",
-    "description":"Manejás por diferentes ciudades del mundo mientras escuchás la radio."
+    "title": "Drive and Listen",
+    "description": "Manejás por diferentes ciudades del mundo mientras escuchás la radio."
   },
   {
     "url": "https://libraryofbabel.info",
@@ -118,7 +118,10 @@
     "url": "https://digibouquet.vercel.app",
     "title": "Digibouquet",
     "description": "Para mandar ramos de flores digitales."
+  },
+  {
+    "url": "https://dailydisobedience.net/",
+    "title": "Archive of Daily Digital Disobedience",
+    "description": "Una recopilación de estrategias para ir en contra de la internet hegemónica"
   }
-
 ]
-  
