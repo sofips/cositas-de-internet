@@ -273,9 +273,9 @@ export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions 
     // Seeds: growth stage by age + home widget
     function seedStage(created) {
       const days = (Date.now() - new Date(created + 'T00:00:00').getTime()) / 86400000;
-      if (isNaN(days) || days < 14) return '🌰';
+      if (isNaN(days) || days < 14) return '🫘';
       if (days < 60) return '🌱';
-      return '🌿';
+      return '🌳';
     }
     document.querySelectorAll('.seed-stage[data-created]').forEach((el) => {
       el.textContent = seedStage(el.getAttribute('data-created'));
@@ -355,17 +355,23 @@ export function baseLayout(content: string, title = SITE_TITLE, seo: SeoOptions 
 }
 
 function seedCards(seeds: Seed[]): string {
-  return seeds.map(seed => `
+  return seeds.map(seed => {
+    // El bot arma el título con las primeras palabras de la idea: si el texto ya lo empieza, no repetirlo.
+    const titleStem = seed.title.replace(/…$/, '').trim();
+    const titleInText = seed.text.startsWith(titleStem);
+    const date = `<span class="seed-meta">plantada el ${escapeAttr(seed.created)}</span>`;
+    return `
     <article class="seed-item">
       <div class="seed-item-head">
         <span class="seed-stage" data-created="${escapeAttr(seed.created)}">🌱</span>
-        <h2>${escapeAttr(seed.title)}</h2>
+        ${titleInText ? date : `<h2>${escapeAttr(seed.title)}</h2>`}
       </div>
       <p class="seed-item-text">${escapeAttr(seed.text)}</p>
-      <div class="seed-meta">plantada el ${escapeAttr(seed.created)}</div>
+      ${titleInText ? '' : date}
       ${seed.url ? `<a class="definition-source" href="${escapeAttr(seed.url)}">leer nota →</a>` : ''}
     </article>
-  `).join('');
+  `;
+  }).join('');
 }
 
 const MAX_CARD_TAGS = 2;
@@ -595,7 +601,7 @@ export function seedsTemplate(seeds: Seed[]): string {
   const content = `
     <section class="gallery-page seeds-page">
       <h1><span class="pixel-arrow">▸</span> Semillas <span class="blink">_</span></h1>
-      <p class="seeds-intro">Ideas cortas sobre las que quiero escribir. 🌰 nueva · 🌱 brotando · 🌿 creciendo hace rato.</p>
+      <p class="seeds-intro">Ideas cortas sobre las que quiero escribir. 🫘 nueva · 🌱 brotando · 🌳 creciendo hace rato.</p>
       <div class="seeds-grid">
         ${items || '<p class="empty-state">¡Todavía no hay semillas!</p>'}
       </div>
