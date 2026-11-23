@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { getAllNotes, getSeeds, ensureDirectories, PUBLIC_TAG, PRIVATE_TAG } from './notes.js';
-import { SITE_URL, homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, seedsTemplate, notFoundTemplate } from './templates.js';
+import { SITE_URL, homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, galleryTemplate, seedsTemplate, lecturasTemplate, lecturaLibroTemplate, notFoundTemplate } from './templates.js';
+import { getJournal } from './lecturas.js';
 import { syncGalleryJson } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -109,6 +110,15 @@ function build(): void {
   fs.writeFileSync(path.join(OUTPUT_DIR, 'semillas.json'), JSON.stringify(seeds, null, 2) + '\n');
   fs.writeFileSync(path.join(OUTPUT_DIR, 'semillas.html'), seedsTemplate(seeds));
   console.log(`   ✓ ${seeds.length} semillas visibles`);
+
+  // Diario de lecturas (escondido: noindex y fuera del sitemap)
+  const journal = getJournal();
+  fs.writeFileSync(path.join(OUTPUT_DIR, 'lecturas.html'), lecturasTemplate(journal));
+  fs.mkdirSync(path.join(OUTPUT_DIR, 'lecturas'), { recursive: true });
+  for (const book of journal) {
+    fs.writeFileSync(path.join(OUTPUT_DIR, 'lecturas', `${book.slug}.html`), lecturaLibroTemplate(book));
+  }
+  console.log(`📖 ${journal.length} libros en el diario`);
 
   // Generate sitemap.xml and robots.txt
   console.log('🗺️  Generating sitemap...');

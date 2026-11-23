@@ -4,7 +4,8 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import chokidar from 'chokidar';
 import { getAllNotes, getSeeds, getNoteBySlug, getAllTags, getNotesByTag, ensureDirectories, invalidateNotesCache } from './notes.js';
-import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, notFoundTemplate, galleryTemplate, seedsTemplate } from './templates.js';
+import { getJournal } from './lecturas.js';
+import { homeTemplate, noteTemplate, tagsTemplate, tagNotesTemplate, notFoundTemplate, galleryTemplate, seedsTemplate, lecturasTemplate, lecturaLibroTemplate } from './templates.js';
 import { invalidateGalleryCache } from './gallery.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,6 +46,17 @@ app.get('/fotos/:tag.html', (req, res) => {
 // Seeds (visible ones only)
 app.get('/semillas.json', (req, res) => {
   res.json(getSeeds());
+});
+
+app.get(['/lecturas', '/lecturas.html'], (req, res) => {
+  res.send(lecturasTemplate(getJournal()));
+});
+
+app.get('/lecturas/:slug', (req, res) => {
+  const slug = req.params.slug.replace(/\.html$/, '');
+  const book = getJournal().find(b => b.slug === slug);
+  if (!book) return res.status(404).send(notFoundTemplate());
+  res.send(lecturaLibroTemplate(book));
 });
 
 app.get(['/semillas', '/semillas.html'], (req, res) => {

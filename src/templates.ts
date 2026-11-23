@@ -1,5 +1,6 @@
 import { Note, Seed, getAllNotes, getSeeds } from './notes.js';
 import { getGalleryImages } from './gallery.js';
+import { JournalBook } from './lecturas.js';
 
 const SITE_TITLE = '✧ Cositas de Internet ✧';
 const BASE_PATH = process.env.BASE_PATH || '';
@@ -448,11 +449,11 @@ export function homeTemplate(notes: Note[]): string {
           <button class="definition-refresh" onclick="window.__refreshWord && window.__refreshWord()">Otra ✨</button>
         </aside>
         
-        <aside class="definition-card glass-card">
-          <div class="definition-badge">[ VOY A TENER SUERTE ]</div>
-          <button class="definition-refresh" onclick="goExternal()">sitio web al azar ✨</button>
-          <a class="definition-source" href="${BASE_PATH}/notes/aleatorio.html">ver lista completa ↗</a>
-        </aside>
+        <div class="lucky-loose">
+          <a href="#" class="lucky-button" onclick="goExternal(); return false;" aria-label="voy a tener suerte"><div style="display: inline-flex; text-align: center; justify-content: center; align-items: center; line-height: 100%; padding: 10px 14px; font-size: 18px; font-style: normal; font-family: Georgia; color: rgb(171, 240, 214); background: #1b2f2a; border: 6px ridge rgb(171, 240, 214);"><img src="https://autopoies.is/buttons/img/45.gif" alt="" style="max-height: 52px;">˚₊‧꒰ა voy a tener suerte ໒꒱ ‧₊˚</div><span class="lucky-tip" role="tooltip">Te lleva a un sitio web al azar de mi lista de favoritos. Si preferís elegir vos, mirá «ver todos» acá abajo.</span></a>
+          <a class="lucky-all" href="${BASE_PATH}/notes/aleatorio.html">ver todos ↗</a>
+          ${readingButton()}
+        </div>
       </div>
     </section>
   `;
@@ -554,6 +555,143 @@ export function notFoundTemplate(): string {
   `;
 
   return baseLayout(content, '404 | Cositas de Internet', { noindex: true });
+}
+
+
+const BOOK_PIXELS = [
+  '..KKKKKKKK..',
+  '.KPFFFFFFFK.',
+  '.KPFFYYFFFK.',
+  '.KPFFFFFFFK.',
+  '.KPFFYYYFFK.',
+  '.KPFFFFFFFK.',
+  '.KPFFFFFFFK.',
+  '.KWWWWWWWWK.',
+  '.KWWWWWWWWK.',
+  '..KKKKKKKK..',
+];
+const BOOK_COLORS: Record<string, string> = { K: '#2b1b4a', P: '#7b4bb9', F: '#e94560', Y: '#ffd93d', W: '#f4ecd8' };
+
+function pixelBookSvg(): string {
+  const rects = BOOK_PIXELS.flatMap((row, y) => [...row].map((c, x) =>
+    BOOK_COLORS[c] ? `<rect x="${x}" y="${y}" width="1" height="1" fill="${BOOK_COLORS[c]}"/>` : '')).join('');
+  return `<svg viewBox="0 0 12 10" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
+}
+
+// Botón estilo 88x31 con librito pixel a los costados. Va escondido bajo «voy a tener suerte».
+function readingButton(): string {
+  return `<a href="${BASE_PATH}/lecturas.html" class="reading-button" title="cositas que leo">
+    ${pixelBookSvg()}<marquee scrollamount="3" direction="right">cositas que leo</marquee>${pixelBookSvg()}
+  </a>`;
+}
+
+const MONTHS = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+
+function shortDate(iso: string): string {
+  const d = new Date(iso);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
+function coverFrame(book: JournalBook, extraClass = ''): string {
+  const inner = book.cover
+    ? `<img src="${BASE_PATH}${book.cover}" alt="Portada de ${escapeHtml(book.title)}" loading="lazy">`
+    : `<span class="cover-fallback">${escapeHtml(book.title)}</span>`;
+  return `<span class="pixel-frame ${extraClass}">${inner}</span>`;
+}
+
+export function lecturasTemplate(books: JournalBook[]): string {
+  const cards = books.map(b => `
+    <a class="book-card" href="${BASE_PATH}/lecturas/${b.slug}.html">
+      ${coverFrame(b)}
+      <span class="book-card-title">${escapeHtml(b.title)}</span>
+      <span class="book-card-author">${escapeHtml(b.author)}</span>
+      <span class="book-card-count">${b.entries.length} ${b.entries.length === 1 ? 'cita' : 'citas'}</span>
+    </a>`).join('');
+
+  const content = `
+    <section class="gallery-page journal-page">
+      <h1><span class="pixel-arrow">▸</span> Cositas que leo <span class="blink">_</span></h1>
+      <p class="seeds-intro"> Estos son los libros que estuve leyendo en mi Kobo. 
+      Adentro de cada uno, están las frases que resalté. No están curadas ni organizadas ni filtradas. Solo
+      muestran cosas que me llamaron la atención.</p>
+      <div class="book-grid">
+        ${cards || '<p class="empty-state">Todavía no hay nada acá...</p>'}
+      </div>
+      <a href="${BASE_PATH}/fotos/" class="back-link">← Volver a las fotos</a>
+    </section>
+  `;
+  return baseLayout(content, 'Cositas que leo | Cositas de Internet', { noindex: true, path: '/lecturas.html' });
+}
+
+export function lecturaLibroTemplate(book: JournalBook): string {
+  const quotes = book.entries.map((e, i) => `
+      <article class="quote-card c${i % 5} t${i % 4}">
+        <blockquote>${escapeHtml(e.text)}</blockquote>
+        ${e.comment ? `<p class="quote-comment">${escapeHtml(e.comment).replace(/\n/g, '<br>')}</p>` : ''}
+        <time datetime="${new Date(e.date).toISOString().slice(0, 10)}">${shortDate(e.date)}</time>
+      </article>`).join('');
+
+  const details = [
+    book.publisher ? escapeHtml(book.publisher) : '',
+    book.year ? String(book.year) : '',
+    book.language ? `en ${escapeHtml(book.language)}` : '',
+  ].filter(Boolean).join(' · ');
+
+  const content = `
+    <section class="gallery-page journal-page book-page">
+      <a href="${BASE_PATH}/lecturas.html" class="back-link">← Todos los libros</a>
+      <header class="book-header">
+        ${coverFrame(book, 'book-header-cover')}
+        <div class="book-info">
+          <h1>${escapeHtml(book.title)}</h1>
+          ${book.subtitle ? `<p class="book-subtitle">${escapeHtml(book.subtitle)}</p>` : ''}
+          ${book.originalTitle ? `<p class="book-original">título original: <em>${escapeHtml(book.originalTitle)}</em></p>` : ''}
+          <p class="book-author">${escapeHtml(book.author)}</p>
+          ${details ? `<p class="book-details">${details}</p>` : ''}
+          <p class="book-description" id="book-description">${escapeHtml(book.description)}</p>
+          <button type="button" class="book-more" id="book-more" hidden>ver más</button>
+        </div>
+      </header>
+      <button type="button" class="mix-button" id="mix-button">🔀 mixear</button>
+      <div class="quote-grid" id="quote-grid">
+        ${quotes}
+      </div>
+      <a href="${BASE_PATH}/lecturas.html" class="back-link">← Todos los libros</a>
+    </section>
+    <script>
+      (function () {
+        var p = document.getElementById('book-description');
+        var btn = document.getElementById('book-more');
+        if (!p || !btn || p.scrollHeight <= p.clientHeight + 2) return;
+        btn.hidden = false;
+        btn.addEventListener('click', function () {
+          var open = p.classList.toggle('open');
+          btn.textContent = open ? 'ver menos' : 'ver más';
+        });
+      })();
+    </script>
+    <script>
+      (function () {
+        var grid = document.getElementById('quote-grid');
+        var btn = document.getElementById('mix-button');
+        if (!grid || !btn) return;
+        function mix() {
+          var cards = Array.prototype.slice.call(grid.children);
+          for (var i = cards.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = cards[i]; cards[i] = cards[j]; cards[j] = tmp;
+          }
+          cards.forEach(function (card, i) {
+            card.className = 'quote-card c' + (i % 5) + ' t' + (i % 4);
+            grid.appendChild(card);
+          });
+        }
+        btn.addEventListener('click', mix);
+        mix();
+      })();
+    </script>
+  `;
+  return baseLayout(content, `${book.title} | Cositas que leo`, { noindex: true, path: `/lecturas/${book.slug}.html` });
 }
 
 export function galleryTemplate(filterTag?: string): string {
