@@ -1,9 +1,9 @@
 ---
 title: Bienvenidxs a mi jardín digital
-tags: [public, bienvenida, meta, intro, jardines, estado-arbol]
+tags: [public, bienvenida, meta, intro, jardines, estado-arbol, árbol]
 estado: "🌳 árbol"
 created: 2026-01-13
-updated: 2026-01-21
+updated: 2026-11-23
 ---
 
 # Bienvenidxs! 🌿
@@ -38,4 +38,4 @@ Las notas se agregan como archivos en markdown. Las fotos, las palabras y los si
 
 Para publicar, todas las notas se procesan y se genera un sitio estático que puede subirse a GitHub Pages o a otros hostings.
 
-Hice un pequeño template para que cada persona pueda empezaar su propio jardín que se puede descargar [acá]{https://github.com/sofips/template-jardin-digital}.
+Hice un pequeño template para que cada persona pueda empezar su propio jardín que se puede descargar [acá](https://github.com/sofips/template-jardin-digital).

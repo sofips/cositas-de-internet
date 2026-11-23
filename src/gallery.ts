@@ -10,7 +10,18 @@ export interface GalleryImage {
 const IMAGES_DIR = path.join(process.cwd(), 'public', 'images');
 const GALLERY_JSON = path.join(IMAGES_DIR, 'gallery.json');
 
+// Like getAllNotes() in notes.ts, this hits the filesystem (readdirSync + gallery.json parse) and
+// is called once per generated page from templates.ts' baseLayout(). Cache it and let
+// invalidateGalleryCache() clear it when images/gallery.json actually change.
+let galleryCache: GalleryImage[] | null = null;
+
+export function invalidateGalleryCache(): void {
+  galleryCache = null;
+}
+
 export function getGalleryImages(): GalleryImage[] {
+  if (galleryCache) return galleryCache;
+
   const imageFiles = fs.readdirSync(IMAGES_DIR)
     .filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
 
@@ -34,6 +45,7 @@ export function getGalleryImages(): GalleryImage[] {
   }));
 
   gallery.sort((a, b) => b.file.localeCompare(a.file));
+  galleryCache = gallery;
   return gallery;
 }
 
