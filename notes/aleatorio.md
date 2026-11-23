@@ -1,9 +1,9 @@
 ---
 title: Lista de sitios aleatorios
-tags: [public, meta, estado-arbol]
+tags: [public, meta, estado-arbol, árbol]
 estado: "🌳 árbol"
 created: 2026-01-19
-updated: 2026-05-17
+updated: 2026-11-23
 ---
 
 # Lista de sitios aleatorios
@@ -21,7 +21,7 @@ Esta lista reúne algunos de los sitios web externos que se abren al azar cuando
 <script>
   // Load and display external sites list
   const basePath = window.BASE_PATH || '';
-  fetch(basePath + '/external-sites.json')
+  fetch(basePath + '/external-sites.json', { cache: 'no-cache' })
     .then(r => r.json())
     .then(sites => {
       const listEl = document.getElementById('external-sites-list');
