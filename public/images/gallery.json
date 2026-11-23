@@ -131,5 +131,15 @@
       "vacaciones",
       "foto"
     ]
+  },
+  {
+    "file": "un_mural_en_buenos_aires.jpg",
+    "description": "un mural en buenos aires",
+    "tags": [
+      "paredes",
+      "buenos aires",
+      "vacaciones",
+      "foto"
+    ]
   }
 ]
