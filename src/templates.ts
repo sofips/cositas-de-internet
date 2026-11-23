@@ -623,7 +623,17 @@ export function lecturasTemplate(books: JournalBook[]): string {
   return baseLayout(content, 'Cositas que leo | Cositas de Internet', { noindex: true, path: '/lecturas.html' });
 }
 
-export function lecturaLibroTemplate(book: JournalBook): string {
+function bookNav(prev: JournalBook, next: JournalBook): string {
+  return `<nav class="book-nav">
+      <a href="${BASE_PATH}/lecturas.html" class="back-link">← Todos los libros</a>
+      <span class="book-arrows">
+        <a href="${BASE_PATH}/lecturas/${prev.slug}.html" class="book-arrow" id="book-prev" title="${escapeHtml(prev.title)}" aria-label="Libro anterior: ${escapeHtml(prev.title)}">◀</a>
+        <a href="${BASE_PATH}/lecturas/${next.slug}.html" class="book-arrow" id="book-next" title="${escapeHtml(next.title)}" aria-label="Libro siguiente: ${escapeHtml(next.title)}">▶</a>
+      </span>
+    </nav>`;
+}
+
+export function lecturaLibroTemplate(book: JournalBook, prev: JournalBook = book, next: JournalBook = book): string {
   const quotes = book.entries.map((e, i) => `
       <article class="quote-card c${i % 5} t${i % 4}">
         <blockquote>${escapeHtml(e.text)}</blockquote>
@@ -639,7 +649,7 @@ export function lecturaLibroTemplate(book: JournalBook): string {
 
   const content = `
     <section class="gallery-page journal-page book-page">
-      <a href="${BASE_PATH}/lecturas.html" class="back-link">← Todos los libros</a>
+      ${bookNav(prev, next)}
       <header class="book-header">
         ${coverFrame(book, 'book-header-cover')}
         <div class="book-info">
@@ -656,7 +666,7 @@ export function lecturaLibroTemplate(book: JournalBook): string {
       <div class="quote-grid" id="quote-grid">
         ${quotes}
       </div>
-      <a href="${BASE_PATH}/lecturas.html" class="back-link">← Todos los libros</a>
+      ${bookNav(prev, next)}
     </section>
     <script>
       (function () {
@@ -688,6 +698,11 @@ export function lecturaLibroTemplate(book: JournalBook): string {
         }
         btn.addEventListener('click', mix);
         mix();
+        document.addEventListener('keydown', function (ev) {
+          if (ev.target && /input|textarea/i.test(ev.target.tagName)) return;
+          var link = document.getElementById(ev.key === 'ArrowLeft' ? 'book-prev' : ev.key === 'ArrowRight' ? 'book-next' : '');
+          if (link) location.href = link.href;
+        });
       })();
     </script>
   `;

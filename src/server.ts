@@ -54,9 +54,12 @@ app.get(['/lecturas', '/lecturas.html'], (req, res) => {
 
 app.get('/lecturas/:slug', (req, res) => {
   const slug = req.params.slug.replace(/\.html$/, '');
-  const book = getJournal().find(b => b.slug === slug);
-  if (!book) return res.status(404).send(notFoundTemplate());
-  res.send(lecturaLibroTemplate(book));
+  const journal = getJournal();
+  const i = journal.findIndex(b => b.slug === slug);
+  if (i === -1) return res.status(404).send(notFoundTemplate());
+  const prev = journal[(i - 1 + journal.length) % journal.length];
+  const next = journal[(i + 1) % journal.length];
+  res.send(lecturaLibroTemplate(journal[i], prev, next));
 });
 
 app.get(['/semillas', '/semillas.html'], (req, res) => {

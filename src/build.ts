@@ -115,9 +115,11 @@ function build(): void {
   const journal = getJournal();
   fs.writeFileSync(path.join(OUTPUT_DIR, 'lecturas.html'), lecturasTemplate(journal));
   fs.mkdirSync(path.join(OUTPUT_DIR, 'lecturas'), { recursive: true });
-  for (const book of journal) {
-    fs.writeFileSync(path.join(OUTPUT_DIR, 'lecturas', `${book.slug}.html`), lecturaLibroTemplate(book));
-  }
+  journal.forEach((book, i) => {
+    const prev = journal[(i - 1 + journal.length) % journal.length];
+    const next = journal[(i + 1) % journal.length];
+    fs.writeFileSync(path.join(OUTPUT_DIR, 'lecturas', `${book.slug}.html`), lecturaLibroTemplate(book, prev, next));
+  });
   console.log(`📖 ${journal.length} libros en el diario`);
 
   // Generate sitemap.xml and robots.txt

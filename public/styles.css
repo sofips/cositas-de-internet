@@ -1547,6 +1547,12 @@ a:focus-visible, button:focus-visible {
 .pixel-frame img { display: block; width: 100%; aspect-ratio: 2 / 3; object-fit: cover; }
 .cover-fallback { display: flex; align-items: center; justify-content: center; aspect-ratio: 2 / 3; padding: 0.75rem; text-align: center; background: var(--purple); font-family: 'Silkscreen', monospace; }
 
+.book-nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1rem 0; }
+.book-nav .back-link { margin: 0; }
+.book-arrows { display: flex; gap: 0.75rem; }
+.book-arrow { display: flex; align-items: center; justify-content: center; width: 2.6rem; height: 2.6rem; background: var(--purple); color: var(--text-primary); border: 3px solid var(--cyan); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.45); text-decoration: none; font-size: 1rem; transition: transform 0.1s steps(2); }
+.book-arrow:hover, .book-arrow:focus-visible { background: var(--fuchsia); transform: translate(-2px, -2px); }
+.book-arrow:active { transform: translate(2px, 2px); box-shadow: none; }
 .book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 2.25rem 1.75rem; margin: 2.5rem 0; padding: 0 6px; }
 .book-card { display: flex; flex-direction: column; gap: 0.25rem; text-decoration: none; color: var(--text-primary); }
 .book-card .pixel-frame { margin-bottom: 0.6rem; }
