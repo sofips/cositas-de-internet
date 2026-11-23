@@ -368,6 +368,16 @@ function seedCards(seeds: Seed[]): string {
   `).join('');
 }
 
+const MAX_CARD_TAGS = 2;
+
+// Tags para las cajas: sin 'public' ni 'estado-*' (ya se muestra el estado), con tope y contador
+function cardTags(tags: string[]): string {
+  const visible = tags.filter(t => t !== 'public' && !t.startsWith('estado-'));
+  const shown = visible.slice(0, MAX_CARD_TAGS).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`);
+  if (visible.length > MAX_CARD_TAGS) shown.push(`<span class="tag">+${visible.length - MAX_CARD_TAGS}</span>`);
+  return shown.join('');
+}
+
 export function homeTemplate(notes: Note[]): string {
   const seeds = getSeeds();
   const noteCards = notes.map(note => `
@@ -378,7 +388,7 @@ export function homeTemplate(notes: Note[]): string {
           ${estadoDisplay(note.estado, formatDate(note.updatedAt))}
         </div>
         <div class="tags">
-          ${note.tags.filter(t => t !== 'public').map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+          ${cardTags(note.tags)}
         </div>
         <p class="preview">${escapeHtml(note.content.replace(/^#.+\n?/m, '').replace(/^\*\*Estado:\*\*\s*.+\n?/m, '').slice(0, 150).replace(/[#*_`]/g, ''))}...</p>
       </a>
