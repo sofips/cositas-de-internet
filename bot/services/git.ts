@@ -174,3 +174,40 @@ export async function addPhotoViaGitHubAPI(
     return { ok: false, file, reason: 'metadata' };
   }
 }
+
+const SITES_PATH = 'public/external-sites.json';
+
+export interface Site {
+  url: string;
+  title: string;
+  description: string;
+}
+
+export async function getSitesFromGitHub(): Promise<{ sites: Site[]; sha: string }> {
+  const res = await axios.get(`${API}/repos/${OWNER}/${REPO}/contents/${SITES_PATH}`, { headers: HEADERS });
+  const sites: Site[] = JSON.parse(Buffer.from(res.data.content, 'base64').toString('utf8') || '[]');
+  return { sites, sha: res.data.sha };
+}
+
+/** Agrega un sitio a la lista de "Voy a tener suerte". `isDuplicate` decide si ya estaba. */
+export async function addSiteViaGitHubAPI(
+  site: Site,
+  isDuplicate: (existing: Site) => boolean
+): Promise<{ ok: boolean; reason?: string }> {
+  try {
+    const { sites, sha } = await getSitesFromGitHub();
+    if (sites.some(isDuplicate)) return { ok: false, reason: 'exists' };
+
+    sites.push(site);
+    await axios.put(`${API}/repos/${OWNER}/${REPO}/contents/${SITES_PATH}`, {
+      message: `🎲 Bot: agregar sitio '${site.title}'`,
+      content: Buffer.from(JSON.stringify(sites, null, 2) + '\n', 'utf8').toString('base64'),
+      sha,
+      committer: { name: config.git.authorName, email: config.git.authorEmail },
+    }, { headers: HEADERS });
+    return { ok: true };
+  } catch (err: any) {
+    console.error('Git API error (site):', err?.response?.data || err.message || err);
+    return { ok: false, reason: 'error' };
+  }
+}

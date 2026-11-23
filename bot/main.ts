@@ -1,12 +1,14 @@
 import { Telegraf } from 'telegraf';
 import axios from 'axios';
+import { normalizeUrl, urlKey, fetchPageTitle } from './services/site.js';
 import { config } from './config.js';
 import { searchDefinition } from './services/dictionary.js';
-import { addDefinitionViaGitHubAPI, addSeedViaGitHubAPI, addPhotoViaGitHubAPI } from './services/git.js';
+import { addDefinitionViaGitHubAPI, addSeedViaGitHubAPI, addPhotoViaGitHubAPI, addSiteViaGitHubAPI, getSitesFromGitHub } from './services/git.js';
 
 type Session = {
-  state?: 'waiting-term' | 'confirm' | 'edit' | 'waiting-seed' | 'confirm-seed' | 'photo-desc' | 'photo-tags';
+  state?: 'waiting-term' | 'confirm' | 'edit' | 'waiting-seed' | 'confirm-seed' | 'photo-desc' | 'photo-tags' | 'site-url' | 'site-title' | 'site-desc';
   seed?: string;
+  site?: { url: string; title?: string; detected?: string | null };
   photo?: { fileId: string; ext: string; description?: string };
   pending?: { term: string; definition: string; source?: string | null };
 };
@@ -32,11 +34,11 @@ bot.use(async (ctx, next) => {
 });
 
 bot.command('start', async (ctx) => {
-  await ctx.reply('🌿 Bot de Definiciones activo.\nUsá /add para agregar una palabra o /semilla para guardar una idea.\nMandame una foto para subirla a la galería.');
+  await ctx.reply('🌿 Bot de Definiciones activo.\nUsá /add para agregar una palabra o /semilla para guardar una idea.\nUsá /sitio para sumar un sitio web a la lista.\nMandame una foto para subirla a la galería.');
 });
 
 bot.command('help', async (ctx) => {
-  await ctx.reply('/add - Agregar palabra\n/semilla - Guardar una idea para escribir después\n(enviá una foto) - Subirla a la galería\n/cancelar - Cancelar lo que estés haciendo\n/help - Ayuda');
+  await ctx.reply('/add - Agregar palabra\n/semilla - Guardar una idea para escribir después\n(enviá una foto) - Subirla a la galería\n/sitio - Agregar un sitio a \"Voy a tener suerte\"\n/cancelar - Cancelar lo que estés haciendo\n/help - Ayuda');
 });
 
 bot.command('add', async (ctx) => {
@@ -53,6 +55,14 @@ bot.command('semilla', async (ctx) => {
   s.state = 'waiting-seed';
   s.pending = undefined;
   await ctx.reply('🌱 Escribí tu idea (la primera línea será el título):');
+});
+
+bot.command('sitio', async (ctx) => {
+  const s = getSession(ctx);
+  if (!s) return;
+  s.state = 'site-url';
+  s.site = undefined;
+  await ctx.reply('🎲 Mandame la URL del sitio:');
 });
 
 bot.command('cancelar', async (ctx) => {
@@ -100,6 +110,67 @@ bot.on('text', async (ctx) => {
   const s = getSession(ctx);
   if (!s) return;
   const text = ctx.message.text.trim();
+
+  if (s.state === 'site-url') {
+    const url = normalizeUrl(text);
+    if (!url) {
+      await ctx.reply('❌ Esa URL no parece válida. Probá de nuevo (ej: https://ejemplo.com) o /cancelar.');
+      return;
+    }
+    try {
+      const { sites } = await getSitesFromGitHub();
+      if (sites.some(x => urlKey(x.url) === urlKey(url))) {
+        await ctx.reply('ℹ️ Ese sitio ya está en la lista.');
+        s.state = undefined;
+        return;
+      }
+    } catch (err: any) {
+      console.error('Sites check error:', err?.message || err);
+    }
+    await ctx.reply('🔍 Buscando el título...');
+    const detected = await fetchPageTitle(url);
+    s.site = { url, detected };
+    s.state = 'site-title';
+    await ctx.reply(
+      detected
+        ? `Título detectado: "${detected}"\nMandá "." para usarlo, o escribí otro título.`
+        : 'No pude leer el título de la página. Escribilo vos:'
+    );
+    return;
+  }
+
+  if (s.state === 'site-title' && s.site) {
+    if (text === '.' && s.site.detected) {
+      s.site.title = s.site.detected;
+    } else if (text === '.') {
+      await ctx.reply('No hay título detectado, escribilo vos:');
+      return;
+    } else {
+      s.site.title = text;
+    }
+    s.state = 'site-desc';
+    await ctx.reply('📝 Ahora una descripción corta:');
+    return;
+  }
+
+  if (s.state === 'site-desc' && s.site?.title) {
+    const { url, title } = s.site;
+    await ctx.reply('💾 Guardando en GitHub...');
+    const r = await addSiteViaGitHubAPI(
+      { url, title, description: text },
+      (x) => urlKey(x.url) === urlKey(url)
+    );
+    if (r.ok) {
+      await ctx.reply(`🎲 Sitio "${title}" agregado. Se publicará en ~1-2 minutos.`);
+    } else if (r.reason === 'exists') {
+      await ctx.reply('ℹ️ Ese sitio ya está en la lista.');
+    } else {
+      await ctx.reply('❌ Error al guardar. Revisá los logs en el servidor.');
+    }
+    s.state = undefined;
+    s.site = undefined;
+    return;
+  }
 
   if (s.state === 'photo-desc' && s.photo) {
     s.photo.description = text;
