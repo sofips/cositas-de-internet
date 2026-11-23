@@ -906,6 +906,8 @@ body {
    ═══════════════════════════════════════════ */
 
 .note-card {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
   padding: 1.5rem;
   cursor: pointer;
   border-color: var(--fuchsia);
@@ -928,7 +930,14 @@ body {
   );
 }
 
-.note-card a { text-decoration: none; color: inherit; display: block; }
+.note-card a { text-decoration: none; color: inherit; display: flex; flex-direction: column; height: 100%; min-height: 0; }
+.note-card .preview {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 70%, transparent 100%);
+}
 
 .note-card h2 {
   font-family: 'Silkscreen', monospace;
